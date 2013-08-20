@@ -1,0 +1,127 @@
+$doctype$
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+	
+	<title>Directory listing $if(title)$$title$$endif$ - Personal website of Cem Aydin</title>
+	
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	
+	<!-- external javascript
+	(The scripts that have a dynamic influence on the page are loaded below, usually before </body>.) -->
+	<script type="text/javascript" src="/gallery.js"></script>
+	
+	<!-- externes stylesheet -->
+	<link rel="stylesheet" type="text/css" href="/style-main.css" />
+	<link rel="stylesheet" type="text/css" href="/style-tableforms.css" />
+	<link rel="stylesheet" type="text/css" href="/style-plugins.css" />
+	<link rel="stylesheet" type="text/css" href="/style-code-pygments_adapted.css" />
+	
+	<!-- favicon -->
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	
+	<!--
+	Copyright 2012, 2013 Cem Aydin
+	
+	Info:
+	Page created by my little CMS "New Simple CMS".
+	Using Pandoc and Markdown. Driven by Python.
+	
+	HTML Code layout remarks:
+	- Some levels of indentation may be omitted here.
+	- Content inserted automatically by my CMS is usually not indented.
+	-->
+	
+</head>
+
+<body>
+	
+	<div id="Container">
+	
+	<div id="Header">
+		<h1>Beauty is simplicity [...]</h1>
+		<p class="quote_a">- Oscar Wilde</p>
+	</div>
+	
+	<div id="Separation">
+	</div>
+	
+	<div id="Navigation">
+		<div id="Sections">
+			<h1>Content</h1>
+			<h3>(Sections)</h3>
+$main-menu$
+		</div>
+<!--
+$if(section-menu-line)$
+		<div id="Pages">
+			<h3 title="in the current section">(Pages...)</h3>
+$for(section-menu-line)$
+$section-menu-line$<br />
+$endfor$
+		</div>
+$endif$
+-->
+	</div>
+
+	<div id="Content">
+		
+		<h2>Directory Listing</h2>
+$if(body)$
+$body$
+$endif$
+		
+		<!-- Listing Path Line -->
+$if(listing-path-line)$
+		<table class="listing-path">
+			<tr><td class="listing-path-title" >Active Path:</td>
+			<td>
+$for(listing-path-line)$
+$listing-path-line$ / 
+$endfor$
+			</td></tr>
+		</table>
+$endif$
+		
+		<!-- Listing Table -->
+		<table class="listing-table">
+			<thead>
+				<tr><th>File</th><th align="right">Size</th><th align="right">Last modified</th></tr>
+			</thead>
+			<tbody>
+$listing-table-entries$
+			</tbody>
+		</table>
+		
+		<!-- Back to top link (hidden by dynamic.js if not needed). -->
+		<p class="backtotop"><a href="#Header">Back to top</a></p>
+		
+		<div class="Singledate">
+			<span class="SingleDate">$if(date)$$date$$endif$</span>
+		</div>
+		
+	</div>
+	
+	<!-- A little CMS control interface -->
+	<!-- Only for local use atm.
+		==> Should be hidden by javascript if website is not on local machine. -->
+	<div id="CMSControlBox">
+		<a href="/cgi-bin/cgi_regenerate.py"><img src="/icons/regenerate-lucent.png" height="45" title="Regenerate page..." alt="Regenerate - control button." /></a><br />
+		<a href="/cgi-bin/cgi_edit.py"><img src="/icons/edit-lucent.png" height="45" title="Quick edit..." alt="Quick edit - control button." /></a><br />
+		
+	</div>
+	
+	<div id="Footer">
+		<a href="/impressum.html">Impressum - Legal notice</a>
+	</div>
+	</div>
+	
+	<!-- dynamic scripts -->
+	<script type="text/javascript" src="/tree-dyn.js"></script>
+	<script type="text/javascript" src="/gallery-dyn.js"></script>
+	<script type="text/javascript" src="/dynamic.js"></script>
+
+</body>
+
+</html>

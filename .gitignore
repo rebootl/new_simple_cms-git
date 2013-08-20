@@ -1,0 +1,14 @@
+# .gitignore file for new_simple_cms
+# (ignore content and public directory, for now)
+content/
+public/
+
+# (ignore data, and notes)
+data/
+notes/
+
+# (ignore all my python testing directories)
+test*/
+
+# (ignore pycache folders)
+__pycache__/

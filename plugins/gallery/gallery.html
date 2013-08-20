@@ -1,0 +1,25 @@
+<div class="Gallery" id="$gallery-name$">
+	
+	<div class="Info">
+		<span class="InfoText" id="InfoText_$gallery-name$"></span>
+	</div>
+	
+	<div class="Viewport">
+		<img id="MainImage_$gallery-name$" src="" alt="" />
+	</div>
+	
+	<div class="Control">
+		<img class="PreviousArrow" height="25px" src="/previous-bevel-blurred.png" alt="Gallery Previous Button" title="Previous Image" onclick='previous_image(parentNode.parentNode.id)' />
+		<img class="ThumbsButton" height="25px" src="/thumbs.png" alt="Gallery Show/Hide Thumbs" title="Show/Hide Thumbnails" onclick='show_thumbs(parentNode.parentNode.id)' />
+		<img class="NextArrow" height="25px" src="/next-bevel-blurred.png" alt="Gallery Next Button" title="Next Image" onclick='next_image(parentNode.parentNode.id)' />
+	</div>
+	
+	<div class="Separation"></div>
+	
+	<div class="Thumbs" id="Thumbs_$gallery-name$">
+$for(thumb-img-line)$
+$thumb-img-line$
+$endfor$
+	</div>
+
+</div>
