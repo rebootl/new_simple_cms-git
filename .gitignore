@@ -3,6 +3,9 @@
 content/
 public/
 
+# (ignore HTML templates)
+templates/
+
 # (ignore data, and notes)
 data/
 notes/
