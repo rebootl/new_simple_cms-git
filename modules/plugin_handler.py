@@ -70,7 +70,7 @@ def get_cdata(text):
 Return the text and the blocks.'''
 	#
 	# the regex for cdata
-	# should be <![TYPE[DATA]]> --> change to [[ TYPE ] [ DATA ]]
+	# should be <![TYPE[DATA]]> ==> changed to [[ TYPE ] [ DATA ]]
 	re_cdata=re.compile(r'\[\[.+?\]\]', re.DOTALL)
 	cdata_blocks=re_cdata.findall(text)
 	
