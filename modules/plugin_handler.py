@@ -25,13 +25,20 @@ def plugin_cdata_handler(subdir, cdata_blocks):
 	plugin_blocks=[]
 	for block in cdata_blocks:
 		# extract plugin name and content from cdata block
-		block_split=block.split('[')
-		plugin_name=block_split[1]
+		#block_split=block.split('[')
+		#plugin_name=block_split[1]
+		#
+		#plugin_rest=''.join(block_split[2:])
+		#plugin_rest_split=plugin_rest.split(']')
+		#
+		#plugin_in=plugin_rest_split[0]
 		
-		plugin_rest=''.join(block_split[2:])
-		plugin_rest_split=plugin_rest.split(']')
+		# --> adapting to new selector format
+		block_split = block.split(']')
+		plugin_name = block_split[0].strip('[[').strip()
 		
-		plugin_in=plugin_rest_split[0]
+		plugin_in = block_split[1].strip().strip('[').strip()
+		
 		
 		# here now we forward the blocks to the appropriate plugins
 		## Each plugin needs an entry here !
@@ -63,8 +70,8 @@ def get_cdata(text):
 Return the text and the blocks.'''
 	#
 	# the regex for cdata
-	# should be <![TYPE[DATA]]>
-	re_cdata=re.compile('<!\[.+?\[.+?\]\]>', re.DOTALL)
+	# should be <![TYPE[DATA]]> --> change to [[ TYPE ] [ DATA ]]
+	re_cdata=re.compile(r'\[\[.+?\]\]', re.DOTALL)
 	cdata_blocks=re_cdata.findall(text)
 	
 	text_rep=text
