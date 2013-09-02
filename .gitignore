@@ -7,7 +7,7 @@ public/
 templates/
 
 # (ignore data, and notes)
-data/
+resources/
 notes/
 
 # (ignore all my python testing directories)
