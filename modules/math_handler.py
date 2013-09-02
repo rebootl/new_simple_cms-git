@@ -76,7 +76,7 @@ COL_BG = 'Transparent'
 COL_FG = 'rgb 0.611765 0.867188 0.867188'
 
 # html tag
-IMG_TAG = '<img class="texmath-img" style="vertical-align:{yoff}px;" src="{img_href}" alt="{img_alt}" title="{img_title}" />'
+IMG_TAG = '<img class="texmath-img" style="vertical-align:{yoff}px;width:auto;margin:auto;display:inline;" src="{img_href}" alt="{img_alt}" title="{img_title}" />'
 
 
 # Functions
