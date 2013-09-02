@@ -72,7 +72,7 @@ Returns the post body in HTML.'''
 <div class="Timeline"><span class="Date">%s</span>
 <span class="Time">%s
 	<span class="EditLink">
-		<a href="/cgi-bin/cgi_edit.py?post_filename=%s"><img src="/icons/edit-lucent_11px.png" title="Edit post..." alt="Edit Post- Button" /></a>
+		<a href="/cgi-bin/cgi_edit.py?post_filename=%s"><img src="/icons/edit-lucent_11px.png" title="Edit post..." alt="Edit Post- Button" style="width:11px;height:11px;"/></a>
 </span></span>
 </div>
 %s
