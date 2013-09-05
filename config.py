@@ -137,9 +137,14 @@ LISTING_PARENT_DIR=''
 PLUGIN_PLACEHOLDER='<div id="placeholder"></div>'
 
 # Extensions
-# Math processing:
+#
+# Math processing
 # (Process Pandoc math using latex and dvipng. Create and insert png images.)
 PROCESS_MATH=True
+
+# Metapost processing
+# (Look for a metapost file in each directory and process it if found. Create images.)
+PROCESS_MP=True
 
 ### Publish:
 #
