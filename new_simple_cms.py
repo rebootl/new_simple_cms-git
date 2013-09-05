@@ -22,13 +22,17 @@ Desired features:
  - A simple plugin system !
  - A gallery page feature... maybe. --> Implemented as plugin.
  - No CSS processing !
- - No tempfiles are written.
+ - No tempfiles are written to disk.
+   (--> Using tempfile python module for latex etc. processing.)
 
 New features:
  - A frontend for local use ! (--> in development)
  - Complete CLI w/ arguments and checks !
  - Math processing using latex and dvipng.
- - Adding support to process Metapost images (separately)
+ - Metapost processing and plugin
+
+Next:
+ - Production of PDF files for every page ! (incl. sel. plugins)
 
 Inspired by Jekyll and Xac.
 '''
@@ -80,7 +84,7 @@ from modules.main_menu import generate_main_menu
 from modules.section_menu import generate_section_menu
 from modules.listing import get_listing_page, gen_listing_table_entries, gen_listing_path_items, prepare_final_listing
 from modules.plugin_handler import back_substitute
-from modules.metapost_handler import process_metapost
+from modules.metapost_handler import handle_metapost
 
 ## Main flow control plan
 #
@@ -115,7 +119,7 @@ def make_regular_pages(pages_struct, subdir):
 		
 		# Add in Metapost support
 		if PROCESS_MP:
-			process_metapost(subdir)
+			handle_metapost(subdir)
 		
 		## 2.1.) Call preprocess_page_group:
 		main_page_body_subst, plugin_blocks, main_page_tb_vals=preprocess_page_group(subdir, page_group)

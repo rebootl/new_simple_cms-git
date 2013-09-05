@@ -52,6 +52,12 @@ def plugin_cdata_handler(subdir, cdata_blocks):
 		
 		elif plugin_name=='TREE':
 			plugin_out=tree(subdir, plugin_in)
+			
+		elif plugin_name=='FIG':
+			plugin_out=metapost(subdir, plugin_in)
+		
+		elif plugin_name=='FIG_EXT':
+			plugin_out=metapost_ext(subdir, plugin_in)
 		#elif plugin_name=' ... ':
 		#	plugin_out=plugins. .. (plugin_content)
 		# if no plugin is found return the raw content

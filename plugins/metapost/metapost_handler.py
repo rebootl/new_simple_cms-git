@@ -2,15 +2,19 @@
 
 Support to process Metapost files.
 
-Metapost files are processed separately and figures are created.
+Metapost files are processed separately and images (PNG) are created.
 
-References to the figures are set in the markdown file using the metapost plugin.
+Links to the images have to be set manually in the Markdown files.
+(This might be a bit cumersome but it's fully compliant with latex/pdf
+creation.)
 
 Only one .mp file is allowed per directory.
 Containing figures as follows:
 beginfig(n);
 ...
 endfig;
+
+Resulting PNG's are named <metapost-filename>-<n>.png
 
 Using metapost and Imagemagick's convert.'''
 # see workflow below
@@ -48,7 +52,7 @@ verbatimtex
 \begin{{document}}
 etex
 
-{mp_figs}
+{0}
 
 end;'''
 
@@ -69,9 +73,7 @@ end;'''
 #
 
 def check_mp(subdir):
-	'''Quick check if there's an .mp file.
-
-Returning the Metapost file if found or False.'''
+	'''Quick check if there's an .mp file.'''
 	dir = os.path.join(CONTENT_DIR, subdir)
 	dir_content = os.listdir(dir)
 	
@@ -82,8 +84,10 @@ Returning the Metapost file if found or False.'''
 	return False
 
 
-def handle_metapost(subdir):
-	'''Processing Metapost content directory wise.'''
+def process_metapost(subdir):
+	'''Processing Metapost content directory wise.
+
+Returning the Metapost file if found or False.'''
 	
 	mp_file = check_mp(subdir)
 	
@@ -96,38 +100,30 @@ def handle_metapost(subdir):
 	#  cms to the publish dir)
 	outdir = os.path.join(CONTENT_DIR, subdir)
 	
-	# read the mp file
+	# create a temporary working directory
+	#tmp_wd_obj = tempfile.TemporaryDirectory()
+	#tmp_wd = tmp_wd_obj.name
+	tmp_wd = os.path.join(outdir, 'tmp')
+	os.makedirs(tmp_wd)
+	
+	# read file
 	mp_filepath = os.path.join(CONTENT_DIR, subdir, mp_file)
 	
 	with open(mp_filepath, 'r') as f:
 		mp = f.read()
-	
-	process_metapost(outdir, mp_file, mp)
-	
-
-def process_metapost(outdir, filename, mp):
-	'''Processing routine for metapost.
-
-(Ded. to be also used by the metapost plugin.)'''
-
-	# create a temporary working directory
-	tmp_wd_obj = tempfile.TemporaryDirectory()
-	tmp_wd = tmp_wd_obj.name
-	#tmp_wd = os.path.join(outdir, 'tmp')
-	#os.makedirs(tmp_wd)
 	
 	# (debug-print)
 	print("mp: ", mp)
 	print("MP_TEMPL: ", MP_TEMPL)
 	
 	# insert the figs into the template
-	mp_full = MP_TEMPL.format(mp_figs=mp)
+	mp_full = MP_TEMPL.format(mp)
 	
 	# (debug-print)
 	#print("mp full: ", mp_full)
 	
 	# write a temporary .mp file
-	tmpfile_mp_path = os.path.join(tmp_wd, filename)
+	tmpfile_mp_path = os.path.join(tmp_wd, mp_file)
 	#tmpfile_mp_path = os.path.join(outdir, mp_file)
 	with open(tmpfile_mp_path, 'w') as f:
 		f.write(mp_full)
@@ -136,7 +132,7 @@ def process_metapost(outdir, filename, mp):
 	os.chdir(tmp_wd)
 	
 	# call metapost
-	args = ['mpost', '-tex=latex', '-debug', filename]
+	args = ['mpost', '-tex=latex', '-debug', mp_file]
 	#proc = subprocess.Popen(args, stdout=subprocess.PIPE)
 	#out_std, out_err = proc.communicate()
 	
