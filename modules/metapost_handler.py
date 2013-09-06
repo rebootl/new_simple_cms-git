@@ -20,6 +20,7 @@ Using metapost and Imagemagick's convert.'''
 import os
 import tempfile
 import subprocess
+import re
 
 # global config variables
 from config import *
@@ -29,10 +30,14 @@ from config import *
 MP_EXT = ".mp"
 
 # resolution
-FIG_RES_DPI = "250"
+FIG_RES_DPI = "205"
+
+# image (png) foreground color for HTML output
+# (metapost color syntax)
+FG_COL_HTML_IMG = "(0.6,0.8,0.8)"
 
 # width
-FIG_WIDTH = "450"
+#FIG_WIDTH = "450"
 
 # metapost template
 MP_TEMPL = r'''prologues := 3;
@@ -105,6 +110,24 @@ def handle_metapost(subdir):
 	process_metapost(outdir, mp_file, mp)
 	
 
+def def_fig_color(mp):
+	'''Find the beginfig(n); tags and add the color specification after them.'''
+	re_beginfig = re.compile(r'beginfig\([0-9]*\);')
+	beginfigs = re_beginfig.findall(mp)
+	
+	color_str = '\ndrawoptions(withcolor '+FG_COL_HTML_IMG+');\n\n'
+	
+	print("beginfigs: ", beginfigs)
+	
+	mp_col = mp
+	for beginfig in beginfigs:
+		replacer = beginfig+color_str
+		
+		mp_col = mp_col.replace(beginfig, replacer)
+	
+	return mp_col
+	
+
 def process_metapost(outdir, filename, mp):
 	'''Processing routine for metapost.
 
@@ -117,14 +140,17 @@ def process_metapost(outdir, filename, mp):
 	#os.makedirs(tmp_wd)
 	
 	# (debug-print)
-	print("mp: ", mp)
-	print("MP_TEMPL: ", MP_TEMPL)
+	#print("mp: ", mp)
+	#print("MP_TEMPL: ", MP_TEMPL)
+	
+	# add the image fg color (for HTML output)
+	mp_col = def_fig_color(mp)
 	
 	# insert the figs into the template
-	mp_full = MP_TEMPL.format(mp_figs=mp)
+	mp_full = MP_TEMPL.format(mp_figs=mp_col)
 	
 	# (debug-print)
-	#print("mp full: ", mp_full)
+	print("mp full: ", mp_full)
 	
 	# write a temporary .mp file
 	tmpfile_mp_path = os.path.join(tmp_wd, filename)

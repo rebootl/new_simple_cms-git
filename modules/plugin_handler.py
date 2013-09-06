@@ -14,7 +14,7 @@ from config import *
 from plugins.insert_file.insert_file import insert_file
 from plugins.gallery.gallery import gallery
 from plugins.tree.tree import tree
-
+from plugins.metapost.metapost import metapost, metapost_ext
 
 # Functions
 
