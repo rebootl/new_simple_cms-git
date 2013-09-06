@@ -2,7 +2,7 @@
 
 Support to process Metapost files.
 
-Metapost files are processed separately and figures are created.
+Metapost files or plugin content is processed and figures are created.
 
 References to the figures are set in the markdown file using the metapost plugin.
 
@@ -21,31 +21,35 @@ import os
 import tempfile
 import subprocess
 import re
+import shutil
 
 # global config variables
 from config import *
+
+# common
+from modules.common import copy_file_abs
 
 # Settings
 # metapost file extension
 MP_EXT = ".mp"
 
-# resolution
-FIG_RES_DPI = "205"
+# resolution (for HTML output)
+# (in dpi)
+# influences the resulting size of the PNG
+FIG_RES_DPI = "150"
 
-# image (png) foreground color for HTML output
+# image (png) foreground color (for HTML output)
 # (metapost color syntax)
 FG_COL_HTML_IMG = "(0.6,0.8,0.8)"
 
 # width
+# --> not used atm
 #FIG_WIDTH = "450"
 
 # metapost template
 MP_TEMPL = r'''prologues := 3;
-%outputtemplate:="%j-%c.svg";
-outputtemplate:="%j-%c.svg";
-outputformat := "svg";
-
-%drawoptions(withcolor (0.6,0.8,0.8));
+outputtemplate:="%j-%c.eps";
+%outputformat := "svg";
 
 verbatimtex
 %&latex
@@ -99,7 +103,8 @@ def handle_metapost(subdir):
 	# (setting this to content, images are needed there for PDF creation,
 	#  together with the other arbitrary files, they will be copied by the 
 	#  cms to the publish dir)
-	outdir = os.path.join(CONTENT_DIR, subdir)
+	# --> setting in process_metapost!
+	#outdir = os.path.join(CONTENT_DIR, subdir)
 	
 	# read the mp file
 	mp_filepath = os.path.join(CONTENT_DIR, subdir, mp_file)
@@ -107,7 +112,7 @@ def handle_metapost(subdir):
 	with open(mp_filepath, 'r') as f:
 		mp = f.read()
 	
-	process_metapost(outdir, mp_file, mp)
+	process_metapost(subdir, mp_file, mp)
 	
 
 def def_fig_color(mp):
@@ -128,35 +133,13 @@ def def_fig_color(mp):
 	return mp_col
 	
 
-def process_metapost(outdir, filename, mp):
-	'''Processing routine for metapost.
-
-(Ded. to be also used by the metapost plugin.)'''
-
-	# create a temporary working directory
-	tmp_wd_obj = tempfile.TemporaryDirectory()
-	tmp_wd = tmp_wd_obj.name
-	#tmp_wd = os.path.join(outdir, 'tmp')
-	#os.makedirs(tmp_wd)
-	
-	# (debug-print)
-	#print("mp: ", mp)
-	#print("MP_TEMPL: ", MP_TEMPL)
-	
-	# add the image fg color (for HTML output)
-	mp_col = def_fig_color(mp)
-	
-	# insert the figs into the template
-	mp_full = MP_TEMPL.format(mp_figs=mp_col)
-	
-	# (debug-print)
-	print("mp full: ", mp_full)
-	
+def call_mpost(mp, tmp_wd, filename):
+	'''Temporary processing of metapost.'''
 	# write a temporary .mp file
 	tmpfile_mp_path = os.path.join(tmp_wd, filename)
-	#tmpfile_mp_path = os.path.join(outdir, mp_file)
+	
 	with open(tmpfile_mp_path, 'w') as f:
-		f.write(mp_full)
+		f.write(mp)
 	
 	wd = os.getcwd()
 	os.chdir(tmp_wd)
@@ -170,28 +153,95 @@ def process_metapost(outdir, filename, mp):
 	
 	os.chdir(wd)
 	
-	# get the svg files
-	svg_files = []
+
+def process_metapost(subdir, filename, mp):
+	'''Processing routine for metapost.
+
+(Ded. to be also used by the metapost plugin.)'''
+	
+	# set out dir
+	# (setting this to content, for now)
+	# (eps files for PDF creation have to be there, see below)
+	outdir = os.path.join(CONTENT_DIR, subdir)
+	
+	# create a temporary working directory
+	tmp_wd_obj = tempfile.TemporaryDirectory()
+	tmp_wd = tmp_wd_obj.name
+	# (debug alternative)
+	#tmp_wd = os.path.join(outdir, 'tmp')
+	#if not os.path.isdir(tmp_wd):
+	#   os.makedirs(tmp_wd)
+	
+	# (debug-print)
+	#print("mp: ", mp)
+	#print("MP_TEMPL: ", MP_TEMPL)
+	
+	# insert the figs into the template
+	mp_full = MP_TEMPL.format(mp_figs=mp)
+	
+	# add the image fg color (for HTML output)
+	mp_col = def_fig_color(mp_full)
+	
+	# (debug-print)
+	#print("mp full: ", mp_full)
+	
+	# mpost processing (temporary)
+	call_mpost(mp_col, tmp_wd, filename)
+	
+	# get the eps files
 	tmpfiles = os.listdir(tmp_wd)
-	# (debug-print)
-	print("tmp wd: ", tmp_wd)
-	print("tmpfiles: ", tmpfiles)
 	
+	# (debug-print)
+	#print("tmp wd: ", tmp_wd)
+	#print("tmpfiles: ", tmpfiles)
+	
+	eps_files = []
 	for file in tmpfiles:
-		if file.endswith('.svg'):
-			svg_files.append(file)
+		if file.endswith('.eps'):
+			eps_files.append(file)
 	
 	# (debug-print)
-	print("svg files: ", svg_files)
+	#print("eps files: ", eps_files)
 	
 	# convert to png's
-	for svg_file in svg_files:
+	for eps_file in eps_files:
 		
-		inpath = os.path.join(tmp_wd, svg_file)
-		outpath = os.path.join(outdir, svg_file.split('.')[0]+'.png')
+		inpath = os.path.join(tmp_wd, eps_file)
+		outpath = os.path.join(outdir, eps_file.split('.')[0]+'.png')
 		
 		# call convert
 		args = ['convert', '-density', FIG_RES_DPI, '-background', 'transparent', inpath, outpath ]
 		subprocess.call(args)
 		
 	
+	if PRODUCE_PDF:
+		# produce eps for PDF output
+		# (the eps has to be produced again because here we want default
+		#  foreground colors)
+		call_mpost(mp_full, tmp_wd, filename)
+		
+		# (debug-print)
+		#print("eps files: ", eps_files)
+		
+		# copy the eps files to the content directory,
+		# for later use in PDF creation
+		# (the references to the eps files will be created by the plugin)
+		for eps_file in eps_files:
+			
+			inpath = os.path.join(tmp_wd, eps_file)
+			outdir = os.path.join(CONTENT_DIR, subdir)
+			
+			# (debug-print)
+			#print("inpath: ", inpath)
+			#print("outdir: ", outdir)
+			# --> have to call copy here cause the tmpdir is destroyed otherwise
+			# --> no cp seems not to work on temporary directory (?)
+			# --> therefor using shutil.copy below, works well
+			#copy_file_abs(inpath, outpath)
+			
+			shutil.copy(inpath, outdir)
+			
+			#cp_command=['cp', '-u', inpath, outdir]
+			#proc=subprocess.Popen(cp_command)
+			
+

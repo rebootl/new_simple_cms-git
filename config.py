@@ -140,12 +140,16 @@ PLUGIN_PLACEHOLDER='<div id="placeholder"></div>'
 #
 # Math processing
 # (Process Pandoc math using latex and dvipng. Create and insert png images.)
-PROCESS_MATH=True
+PROCESS_MATH = True
 
 # Metapost processing (external)
 # Needed for external figures using the metapost plugin.
 # (Look for a metapost file in each directory and process it if found. Create images.)
-PROCESS_MP=True
+PROCESS_MP = True
+
+# Produce PDF files !
+# Produce a PDF for every page using Pandoc.
+PRODUCE_PDF = True
 
 ### Publish:
 #

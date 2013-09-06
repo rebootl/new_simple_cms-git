@@ -64,7 +64,9 @@ Returns a list of subdirs w/o CONTENT_DIR.'''
 
 
 def copy_file(subdir, file):
-	'''Using cp command to copy a file.'''
+	'''Using cp command to copy a file.
+
+Using the CONTENT_DIR and PUBLISH_DIR variables.'''
 	#
 	# input file
 	in_file=os.path.join(CONTENT_DIR, subdir, file)
@@ -77,6 +79,15 @@ def copy_file(subdir, file):
 	proc=subprocess.Popen(cp_command)
 	
 
+def copy_file_abs(inpath, out_dir):
+	'''Call copy w/o preset directories.
+(Not recursive.)
+--> shutil.copy could be used for this.'''
+	# using cp -u
+	cp_command=['cp', '-u', inpath, out_dir]
+	
+	proc=subprocess.Popen(cp_command)
+	
 
 def make_linkfile(subdir, link):
 	'''Make a file for links.'''

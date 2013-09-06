@@ -60,10 +60,11 @@ def metapost(subdir, plugin_in):
 	
 Using the processing function from modules.metapost_handler.'''
 	
-	outdir = os.path.join(CONTENT_DIR, subdir)
+	# --> set in process_metapost
+	#outdir = os.path.join(CONTENT_DIR, subdir)
 	
 	# call the processing function
-	process_metapost(outdir, BASE_FILE_NAME, plugin_in)
+	process_metapost(subdir, BASE_FILE_NAME, plugin_in)
 	
 	# extract the figure number
 	beginfig_mp = plugin_in.split(';')[0].strip()
