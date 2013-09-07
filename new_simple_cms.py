@@ -32,7 +32,7 @@ New features:
  - Metapost processing and plugin
 
 Next:
- - Production of PDF files for every page ! (incl. sel. plugins)
+ - Production of high-quality PDF files for every page using Pandoc ! (incl. sel. plugins)
 
 Inspired by Jekyll and Xac.
 '''
@@ -85,6 +85,7 @@ from modules.section_menu import generate_section_menu
 from modules.listing import get_listing_page, gen_listing_table_entries, gen_listing_path_items, prepare_final_listing
 from modules.plugin_handler import back_substitute
 from modules.metapost_handler import handle_metapost
+from modules.pdf_gen import generate_pdf
 
 ## Main flow control plan
 #
@@ -124,6 +125,16 @@ def make_regular_pages(pages_struct, subdir):
 		## 2.1.) Call preprocess_page_group:
 		main_page_body_subst, plugin_blocks, main_page_tb_vals=preprocess_page_group(subdir, page_group)
 		#page_subcontent=preprocess_page_group(subdir, page_group)
+		
+		# PDF production
+		if PRODUCE_PDF:
+			print("Produce a PDF.")
+			# plugins must provide blocks for pdf's
+			# (setting to [] for development,
+			#  I want to write generate_pdf first)
+			plugin_blocks_pdf = []
+			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
+		
 		# scan doctype
 		body_doctype=scan_doctype(main_page_body_subst)
 		
@@ -285,16 +296,25 @@ def main():
 	parser.add_argument('PATH', help="PATH frowm where to start refreshing (recursive, simply use . for everything, the full path is created automatically by prepending CONTENT_DIR, from config.py, to PATH)")
 	
 	# add optional arguments
+	parser.add_argument('--pdf', help="produce a PDF file for every page", action="store_true")
+	
 	# (grouping)
 	group=parser.add_mutually_exclusive_group()
 	group.add_argument('-f', '--file', help="only refresh a given page specified by PATH", action="store_true")
 	group.add_argument('-o', '--only-subdir', help="only refresh a given subdir specified by PATH (not recursive)", action="store_true")
+	
 	#group.add_argument('-r', '--subdir', help="refresh recursively from the given subdir SUBDIR on, inside CONTENT_DIR")
 	
 	# parse arguments
 	args=parser.parse_args()
 	
 	filepath=args.PATH
+	# --pdf
+	if args.pdf:
+		# set global config variable
+		global PRODUCE_PDF
+		PRODUCE_PDF = True
+	
 	# -f FILE
 	if args.file:
 		# check filename
