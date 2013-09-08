@@ -31,12 +31,12 @@ TREE_CLASS_NAME='Tree'
 FOOTER_TEXT='Modified output and style for this website.'
 
 
-def tree_pipe(dir, title, add_opts=[]):
+def tree_pipe(dir, add_opts):
 	## Create a tree pipe
 	#
 	# the command
 	tree_command=['tree']
-	base_options=['-a', '-C', '--charset=utf8', '-H', title, dir]
+	base_options=['-a', dir]
 	
 	cmd=tree_command+base_options+add_opts
 	
@@ -48,6 +48,15 @@ def tree_pipe(dir, title, add_opts=[]):
 	return output
 	
 
+#def tree_pipe_ascii(dir):
+#	cmd = ['tree', '-a', '--charset', 'ascii', dir]
+#	
+#	proc=subprocess.Popen(cmd, stdout=subprocess.PIPE)
+##	stdout, stderr=proc.communicate()
+#	output = stdout.decode('ascii')
+#	
+#	return output
+	
 
 def tree(subdir, plugin_in):
 	# read the fields
@@ -77,10 +86,13 @@ def tree(subdir, plugin_in):
 		# and maybe a try/except statement would be better but (?)
 		file_not_found_error="TREE plugin error: Directory ("+directory_real+") not found."
 		print(file_not_found_error)
-		return file_not_found_error
+		return file_not_found_error, file_not_found_error
 	
 	# run tree
-	tree_html_out=tree_pipe(directory_real, directory_in, add_fields)
+	title = directory_in
+	# options: -C (colorize) -H (header)
+	html_opts = ['-C', '--charset', 'utf8', '-H', title ]
+	tree_html_out=tree_pipe(directory_real, html_opts)
 	
 	# (debug-info)
 	#print(tree_html_out)
@@ -118,10 +130,25 @@ def tree(subdir, plugin_in):
 	
 	if PRODUCE_PDF:
 		# trying to insert HTML
-		tree_html_formatted_md = tree_html_formatted
+		# --> _bad_, latex doesn't understand utf8/unicode (? what's the difference ?)
+		# ==> here we need an ascii output of tree, _nice_
+		#tree_html_formatted_md = tree_html_formatted
+		ascii_opts = [ '--charset', 'ascii' ]
+		tree_ascii_out = tree_pipe(directory_real, ascii_opts)
+		
+		# replace top level directory
+		tree_ascii_lines = tree_ascii_out.split('\n')
+		del tree_ascii_lines[0]
+		tree_ascii_lines.insert(0, directory_in)
+		tree_ascii_mod = '\n'.join(tree_ascii_lines)
+		
+		# wrap it in markdown code delimiters + title
+		md_pre = '\nDirectory Tree\n\n~~~~\n'
+		md_post = '\n~~~~\n\n'
+		tree_ascii_out_md = md_pre+tree_ascii_mod+md_post
 		
 	else:
-		tree_html_formatted_md = ""
+		tree_ascii_out_md = ""
 	
-	return tree_html_formatted, tree_html_formatted_md
+	return tree_html_formatted, tree_ascii_out_md
 	

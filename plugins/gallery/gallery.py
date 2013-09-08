@@ -109,7 +109,7 @@ def gallery(subdir, plugin_in):
 		# image alt text should be inserted from db (text file) here
 		img_alt=''
 		# writing html here to speed up things...
-		thumb_line='<img src="{}" alt="{}" onclick="change_image(this, parentNode.parentNode.id)" />'.format(img_src, img_alt)
+		thumb_line='<img src="{}" alt="{}" onclick="change_image(this, parentNode.parentNode.id)" style="width:auto;"/>'.format(img_src, img_alt)
 		
 		thumb_lines.append(thumb_line)
 	
@@ -126,7 +126,8 @@ def gallery(subdir, plugin_in):
 	# output for PDF production
 	# (returning raw content + remark, atm)
 	if PRODUCE_PDF:
-		pdf_md = plugin_in + "\n(Gallery plugin PDF output not supported, yet.)\n"
+		pdf_md = "[[ GALLERY ] [ "+plugin_in+" ]  \n(Gallery plugin, PDF output not yet supported.)\n"
+		print("pdf md: ", pdf_md)
 	else:
 		pdf_md = ""
 	

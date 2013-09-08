@@ -45,44 +45,40 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	
 	# create a temporary working directory for pandoc,
 	# to avoid cluttering the cms root
-	# (debug)
-	#tmp_wd_obj = tempfile.TemporaryDirectory()
-	#tmp_wd = tmp_wd_obj.name
-	# (debug alternative)
-	#tmp_wd = os.path.join(outdir, 'tmp')
-	#if not os.path.isdir(tmp_wd):
-	#	os.makedirs(tmp_wd)	
-	
-	# set working directory to current subdir
-	cwd = os.getcwd()
-	tmp_wd = outdir
-	os.chdir(tmp_wd)
-	
-	#tmp_pdf = os.path.join(tmp_wd, filename_pdf)
+	# --> this doesn't work cause pandoc cannot find included images then
 	
 	# (debug-print)
-	print("page body pdf: ", page_body)
+	#print("page body (for pdf):", page_body)
+	
+	# --> set working directory to the current subdir
+	cwd = os.getcwd()
+	
+	os.chdir(outdir)
 	
 	# create a temporary md file
-	tmp_filename_md = 'gen-pdf-tmp-xxx555.md'
-	with open(tmp_filename_md, 'w') as tf:
-		tf.write(page_body)
-	
-	outfile = os.path.join(outdir, filename_pdf)
+	#tmp_filename_md = 'gen-pdf-tmp-xxx555.md'
+	#with open(tmp_filename_md, 'w') as tf:
+	#	tf.write(page_body)
 	
 	# call pandoc
-	pandoc_command = ['pandoc', tmp_filename_md, '-o', outfile]
+	pandoc_command = ['pandoc', '-o', filename_pdf]
 	args = pandoc_command+opts
 	
-	#proc = subprocess.Popen(args, stdin=subprocess.PIPE)
-	#input = page_body.encode()
-	#
-	#stdout, stderr = proc.communicate(input=input)
-	subprocess.call(args)
+	proc = subprocess.Popen(args, stdin=subprocess.PIPE)
+	input = page_body.encode()
+	
+	stdout, stderr = proc.communicate(input=input)
+	#subprocess.call(args)
+	
+	# cleanup the subdir from temporary files
+	files = os.listdir('.')
+	
+	tmpfiles = []
+	for file in files:
+		if '-eps-converted-to.pdf' in file:
+			tmpfiles.append(file)
+	
+	for tmpfile in tmpfiles:
+		os.remove(tmpfile)
 	
 	os.chdir(cwd)
-	
-	# back copy the resulting pdf
-	#shutil.copy(tmp_pdf, outdir)
-	
-	
