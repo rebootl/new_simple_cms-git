@@ -123,7 +123,7 @@ def make_regular_pages(pages_struct, subdir):
 			handle_metapost(subdir)
 		
 		## 2.1.) Call preprocess_page_group:
-		main_page_body_subst, plugin_blocks, main_page_tb_vals=preprocess_page_group(subdir, page_group)
+		main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals=preprocess_page_group(subdir, page_group)
 		#page_subcontent=preprocess_page_group(subdir, page_group)
 		
 		# PDF production
@@ -132,7 +132,7 @@ def make_regular_pages(pages_struct, subdir):
 			# plugins must provide blocks for pdf's
 			# (setting to [] for development,
 			#  I want to write generate_pdf first)
-			plugin_blocks_pdf = []
+			#plugin_blocks_pdf = []
 			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
 		
 		# scan doctype
@@ -296,7 +296,9 @@ def main():
 	parser.add_argument('PATH', help="PATH frowm where to start refreshing (recursive, simply use . for everything, the full path is created automatically by prepending CONTENT_DIR, from config.py, to PATH)")
 	
 	# add optional arguments
-	parser.add_argument('--pdf', help="produce a PDF file for every page", action="store_true")
+	# --> leads to problems at importing
+	# --> need to find a solution for global controller variables
+	#parser.add_argument('--pdf', help="produce a PDF file for every page", action="store_true")
 	
 	# (grouping)
 	group=parser.add_mutually_exclusive_group()
@@ -310,10 +312,10 @@ def main():
 	
 	filepath=args.PATH
 	# --pdf
-	if args.pdf:
-		# set global config variable
-		global PRODUCE_PDF
-		PRODUCE_PDF = True
+	#if args.pdf:
+	#	global PRODUCE_PDF
+	#	# set global config variable
+	#	PRODUCE_PDF = True
 	
 	# -f FILE
 	if args.file:

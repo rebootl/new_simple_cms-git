@@ -32,7 +32,9 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	
 	# back substitute the plugin blocks into the page body
 	if plugin_blocks_pdf != []:
-		page_body = back_substitute(page_body_subst, plugin_block_pdf)
+		# (debug-print)
+		#print("plugin blocks pdf: ", plugin_blocks_pdf)
+		page_body = back_substitute(page_body_subst, plugin_blocks_pdf)
 	else:
 		page_body = page_body_subst
 	
@@ -43,26 +45,44 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	
 	# create a temporary working directory for pandoc,
 	# to avoid cluttering the cms root
-	tmp_wd_obj = tempfile.TemporaryDirectory()
-	tmp_wd = tmp_wd_obj.name
+	# (debug)
+	#tmp_wd_obj = tempfile.TemporaryDirectory()
+	#tmp_wd = tmp_wd_obj.name
+	# (debug alternative)
+	#tmp_wd = os.path.join(outdir, 'tmp')
+	#if not os.path.isdir(tmp_wd):
+	#	os.makedirs(tmp_wd)	
 	
+	# set working directory to current subdir
 	cwd = os.getcwd()
+	tmp_wd = outdir
 	os.chdir(tmp_wd)
 	
-	tmp_pdf = os.path.join(tmp_wd, filename_pdf)
+	#tmp_pdf = os.path.join(tmp_wd, filename_pdf)
+	
+	# (debug-print)
+	print("page body pdf: ", page_body)
+	
+	# create a temporary md file
+	tmp_filename_md = 'gen-pdf-tmp-xxx555.md'
+	with open(tmp_filename_md, 'w') as tf:
+		tf.write(page_body)
+	
+	outfile = os.path.join(outdir, filename_pdf)
 	
 	# call pandoc
-	pandoc_command = ['pandoc', '-o', tmp_pdf]
+	pandoc_command = ['pandoc', tmp_filename_md, '-o', outfile]
 	args = pandoc_command+opts
 	
-	proc = subprocess.Popen(args, stdin=subprocess.PIPE)
-	input = page_body.encode()
-	
-	stdout, stderr = proc.communicate(input=input)
+	#proc = subprocess.Popen(args, stdin=subprocess.PIPE)
+	#input = page_body.encode()
+	#
+	#stdout, stderr = proc.communicate(input=input)
+	subprocess.call(args)
 	
 	os.chdir(cwd)
 	
 	# back copy the resulting pdf
-	shutil.copy(tmp_pdf, outdir)
+	#shutil.copy(tmp_pdf, outdir)
 	
 	

@@ -46,10 +46,10 @@ from modules.metapost_handler import process_metapost, MP_EXT, check_mp
 BASE_FILE_NAME = 'fig-plugin-xxx555'
 
 # img tag
-IMG_TAG = '<img style="width:auto;" alt="{alt}" src="{img_src}" />\n'
+IMG_TAG = '<img style="width:auto;" alt="{alt}" src="{src}" />\n'
 
 # description tag (explicit)
-DESC_TAG = '<p class="comment">Fig. {n}: {description}</p>\n'
+DESC_TAG = '<p class="comment">Fig. {n}: {desc}</p>\n'
 
 
 # Functions
@@ -70,13 +70,23 @@ Using the processing function from modules.metapost_handler.'''
 	beginfig_mp = plugin_in.split(';')[0].strip()
 	fig_num = beginfig_mp[-2]
 	
-	img_alt = "Figure / Illustration Nr."+fig_num
+	img_alt = "Figure "+fig_num
+	img_src = BASE_FILE_NAME+'-'+fig_num+'.png'
 	
 	# create tag
-	img_tag = IMG_TAG.format(alt=img_alt, img_src=BASE_FILE_NAME+'-'+fig_num+'.png')
+	img_tag = IMG_TAG.format(alt=img_alt, src=img_src)
+	
+	# PDF production
+	if PRODUCE_PDF:
+		eps_filename = BASE_FILE_NAME+'-'+fig_num+'.eps'
+		
+		img_tag_md = "!["+img_alt+"]("+eps_filename+")"
+		
+	else:
+		img_tag_md = ""
 	
 	# return
-	return img_tag
+	return img_tag, img_tag_md
 	
 
 def metapost_ext(subdir, plugin_in):
@@ -101,10 +111,18 @@ def metapost_ext(subdir, plugin_in):
 	png_filename = mp_filename+'-'+fig_num+'.png'
 	
 	# create tag
-	img_tag = IMG_TAG.format(alt=fig_desc, img_src=png_filename)
+	img_tag = IMG_TAG.format(alt=fig_desc, src=png_filename)
 	desc_tag = DESC_TAG.format(n=fig_num, description=fig_desc)
 	full_tag = img_tag+desc_tag
 	
+	# PDF production
+	if PRODUCE_PDF:
+		eps_filename = mp_filename+'-'+fig_num+'.eps'
+		img_tag_md = "!["+fig_desc+"]("+eps_filename+")"
+	
+	else:
+		img_tag_md = ""
+	
 	# return
-	return full_tag
+	return full_tag, img_tag_md
 

@@ -31,12 +31,13 @@ Returning the substituted body and the plugin blocks.'''
 	
 	# process the plug-in content
 	if cdata_blocks != []:
-		plugin_blocks=plugin_cdata_handler(subdir, cdata_blocks)
+		plugin_blocks, plugin_blocks_pdf = plugin_cdata_handler(subdir, cdata_blocks)
 	
 	else:
 		plugin_blocks=[]
+		plugin_blocks_pdf = []
 	
-	return file_body_subst, plugin_blocks
+	return file_body_subst, plugin_blocks, plugin_blocks_pdf
 	
 
 def handle_math(subdir, page_body):
@@ -142,17 +143,17 @@ And the plugin blocks and the title block as lists.'''
 		main_page_body=main_page_body+'\n'+sub_page_ready
 	
 	# substitute and process the plugin content
-	main_page_body_subst, plugin_blocks=substitute_content(subdir, main_page_body)
+	main_page_body_subst, plugin_blocks, plugin_blocks_pdf = substitute_content(subdir, main_page_body)
 	
 	## Preprocess math content
 	# similar to plugins math content is handled here by my own functions
 	# (see the math_handler module)
 	if PROCESS_MATH:
 		main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
-		return main_page_body_subst_m, plugin_blocks, main_page_tb_vals
+		return main_page_body_subst_m, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
 	
 	else:
-		return main_page_body_subst, plugin_blocks, main_page_tb_vals
+		return main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
 	
 
 ### New function for CGI frontend, construct pages_struct only for a page.

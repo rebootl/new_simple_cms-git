@@ -122,7 +122,8 @@ def def_fig_color(mp):
 	
 	color_str = '\ndrawoptions(withcolor '+FG_COL_HTML_IMG+');\n\n'
 	
-	print("beginfigs: ", beginfigs)
+	# (debug-print)
+	#print("beginfigs: ", beginfigs)
 	
 	mp_col = mp
 	for beginfig in beginfigs:
@@ -146,10 +147,10 @@ def call_mpost(mp, tmp_wd, filename):
 	
 	# call metapost
 	args = ['mpost', '-tex=latex', '-debug', filename]
-	#proc = subprocess.Popen(args, stdout=subprocess.PIPE)
-	#out_std, out_err = proc.communicate()
+	proc = subprocess.Popen(args, stdout=subprocess.PIPE)
+	out_std, out_err = proc.communicate()
 	
-	subprocess.call(args)
+	#subprocess.call(args)
 	
 	os.chdir(wd)
 	
@@ -214,7 +215,9 @@ def process_metapost(subdir, filename, mp):
 		subprocess.call(args)
 		
 	
-	if PRODUCE_PDF:
+	#if PRODUCE_PDF:
+	# (debug)
+	if True:
 		# produce eps for PDF output
 		# (the eps has to be produced again because here we want default
 		#  foreground colors)

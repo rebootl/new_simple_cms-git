@@ -1,25 +1,22 @@
 #!/usr/bin/python
-#
-# Plugin for new_simple_cms.
-#
-# Insert an image gallery.
-#
-# CDATA syntax:
-#
-# <![GALLERY[directory]]>
-#
-# Where _directory_ should be a directory containing the images.
-#  (If you don't want the directory to appear on the website it should be outside of content. 
-#   If relative it will be assumed to be in the script directory!)
-#
-# Images will be resized, thumbnailed and copied into the current public subdir.
-#  (Checking for existing files to speed it up.)
-#
-# Gallery functionality on the website is controlled by Javascript and CSS.
-#
-# Using imagemagick's convert.
-#
-##
+'''Plugin for new_simple_cms.
+
+Insert an image gallery.
+
+CDATA syntax:
+
+<![GALLERY[directory]]>
+
+Where _directory_ should be a directory containing the images.
+(If you don't want the directory to appear on the website it should be outside of content. 
+If relative it will be assumed to be in the script directory!)
+
+Images will be resized, thumbnailed and copied into the current public subdir.
+(Checking for existing files to speed it up.)
+
+Gallery functionality on the website is controlled by Javascript and CSS.
+
+Using imagemagick's convert.'''
 
 ## Imports:
 #
@@ -61,7 +58,7 @@ def gallery(subdir, plugin_in):
 	else:
 		dir_not_found_error="GALLERY plugin error: Directory "+gallery_dir+" not found."
 		print(dir_not_found_error)
-		return dir_not_found_error
+		return dir_not_found_error, dir_not_found_error
 	
 	## Handle the images:
 	# set the out dir
@@ -126,6 +123,13 @@ def gallery(subdir, plugin_in):
 	
 	gallery_html=pandoc_pipe('', opts)
 	
-	return gallery_html
+	# output for PDF production
+	# (returning raw content + remark, atm)
+	if PRODUCE_PDF:
+		pdf_md = plugin_in + "\n(Gallery plugin PDF output not supported, yet.)\n"
+	else:
+		pdf_md = ""
+	
+	return gallery_html, pdf_md
 	
 

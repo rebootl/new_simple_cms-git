@@ -1,20 +1,18 @@
 #!/usr/bin/python
-#
-# Plugin for new_simple_cms.
-#
-# Insert a file content. Either as text or as specified code block.
-#
-# This one will simply use pandoc to format the code blocks!
-#
-# CDATA syntax:
-#
-# <![INSERTFILE[type, filename]]>
-#
-# Where _type_ can be text, or any code type pandoc understands (see pandoc --version).
-# And _filename_ can be an either be a relative path, starting in the directory the plugin is 
-#  used. Or an absolute path.
-#
-##
+'''Plugin for new_simple_cms.
+
+Insert a file content. Either as text or as specified code block.
+
+This one will simply use pandoc to format the code blocks!
+
+CDATA syntax:
+
+<![INSERTFILE[type, filename]]>
+
+Where _type_ can be text, or any code type pandoc understands
+(see pandoc --version).
+And _filename_ can be an either be a relative path, starting in the 
+directory the plugin is used. Or an absolute path.'''
 
 ## Imports:
 #
@@ -57,7 +55,7 @@ def insert_file(subdir, plugin_in):
 		# and maybe a try/except statement would be better but (?)
 		file_not_found_error="INSERTFILE plugin error: File ("+filepath+") not found."
 		print(file_not_found_error)
-		return file_not_found_error
+		return file_not_found_error, file_not_found_error
 	
 	# read the file
 	file_op=open(filepath, 'r')
@@ -88,5 +86,19 @@ def insert_file(subdir, plugin_in):
 	
 	file_content_html_title=title_line+'\n'+file_content_html
 	
-	return file_content_html_title
+	# PDF production
+	if PRODUCE_PDF:
+		# create a title
+		title_md = "File: "+filename+"\n"
+		# (debug)
+		file_content_md = plugin_in
+		#file_content_md = title_md+file_content_md
+		# (debug-print)
+		print("file_content_md: ", file_content_md)
+		
+	else:
+		file_content_md = ""
+		print("md empty...")
+	
+	return file_content_html_title, file_content_md
 	

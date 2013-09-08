@@ -1,21 +1,18 @@
 #!/usr/bin/python
-#
-# Plugin for new_simple_cms.
-#
-# Insert a clickable directory tree structure.
-#
-# Using tree to generate the tree.
-# Probably using a little javascript to edit the links to use listing.html.
-#
-# CDATA syntax:
-#
-# <![TREE[directory, tree-options]]>
-#
-# Where _directory_ can be a relative path, starting in the directory the plugin is used.
-#  Or an absolute path.
-# And _tree-options_ are additional tree command line options.
-#
-##
+'''Plugin for new_simple_cms.
+
+Insert a clickable directory tree structure.
+
+Using tree to generate the tree.
+Probably using a little javascript to edit the links to use listing.html.
+
+CDATA syntax:
+
+<![TREE[directory, tree-options]]>
+
+Where _directory_ can be a relative path, starting in the directory the plugin is used.Or an absolute path.
+
+And _tree-options_ are additional tree command line options.'''
 
 ## Imports:
 #
@@ -119,5 +116,12 @@ def tree(subdir, plugin_in):
 	# (debug-info)
 	#print(tree_html_lines)
 	
-	return tree_html_formatted
-
+	if PRODUCE_PDF:
+		# trying to insert HTML
+		tree_html_formatted_md = tree_html_formatted
+		
+	else:
+		tree_html_formatted_md = ""
+	
+	return tree_html_formatted, tree_html_formatted_md
+	

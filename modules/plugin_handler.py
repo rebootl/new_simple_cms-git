@@ -22,7 +22,8 @@ def plugin_cdata_handler(subdir, cdata_blocks):
 	'''Receive the cdata blocks and forward them to the appropriate plugin.'''
 	#
 	#
-	plugin_blocks=[]
+	plugin_blocks = []
+	plugin_blocks_pdf = []
 	for block in cdata_blocks:
 		# extract plugin name and content from cdata block
 		#block_split=block.split('[')
@@ -44,30 +45,35 @@ def plugin_cdata_handler(subdir, cdata_blocks):
 		## Each plugin needs an entry here !
 		#plugin_names=
 		if plugin_name=='INSERTFILE':
-			plugin_out=insert_file(subdir, plugin_in)
+			plugin_out, pdf_out = insert_file(subdir, plugin_in)
 			#plugin_out=plugin_content
 		
 		elif plugin_name=='GALLERY':
-			plugin_out=gallery(subdir, plugin_in)
+			plugin_out, pdf_out = gallery(subdir, plugin_in)
 		
 		elif plugin_name=='TREE':
-			plugin_out=tree(subdir, plugin_in)
+			plugin_out, pdf_out = tree(subdir, plugin_in)
 			
 		elif plugin_name=='FIG':
-			plugin_out=metapost(subdir, plugin_in)
+			plugin_out, pdf_out = metapost(subdir, plugin_in)
 		
 		elif plugin_name=='FIG_EXT':
-			plugin_out=metapost_ext(subdir, plugin_in)
+			plugin_out, pdf_out = metapost_ext(subdir, plugin_in)
 		#elif plugin_name=' ... ':
-		#	plugin_out=plugins. .. (plugin_content)
+		#	plugin_out, pdf_out = plugins. .. (plugin_content)
 		# if no plugin is found return the raw content
 		else:
 			print("No plugin named:", plugin_name, "found,\n returning raw content.")
-			plugin_out=block
+			plugin_out = block
+			pdf_out = block
 		
 		plugin_blocks.append(plugin_out)
+		plugin_blocks_pdf.append(pdf_out)
 	
-	return plugin_blocks
+	# (debug-print)
+	#print("plugin blocks pdf plugin_handler: ", plugin_blocks_pdf)
+	
+	return plugin_blocks, plugin_blocks_pdf
 	
 
 def get_cdata(text):

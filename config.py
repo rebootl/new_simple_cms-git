@@ -149,8 +149,8 @@ PROCESS_MP = True
 
 # Produce PDF files !
 # Produce a PDF for every page using Pandoc.
-# (Can be set by command line argument now.)
-PRODUCE_PDF = False
+# (Would be nice to set by command line argument but doesn't work atm.)
+PRODUCE_PDF = True
 
 ### Publish:
 #
