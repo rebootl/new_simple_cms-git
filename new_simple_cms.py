@@ -44,8 +44,9 @@ Inspired by Jekyll and Xac.
 #--------------------------------------------------------------------------------
 #
 # Regarding the code I used almost nothing from Xac, however I mention it's
-# copyright here. (--> evtl. move this to modules.common only)
-# (Basically I stole the _idea_ and learned about Pandoc and Markdown from it.)
+# copyright here.
+# Basically I learned about Pandoc and Markdown from it. The directory structure
+# is similar, as it is in Jekyll.
 #
 # Xac copyright:
 # Copyright (C) 2012  Xyne
