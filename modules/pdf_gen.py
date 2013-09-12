@@ -12,7 +12,7 @@ import subprocess
 import shutil
 
 # global config variables
-from config import *
+import config
 
 # common
 from modules.plugin_handler import back_substitute
@@ -26,7 +26,7 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	# final output directory
 	# (setting this into CONTENT_DIR atm,
 	#  PDF's will be copied with the rest)
-	outdir = os.path.join(CONTENT_DIR, subdir)
+	outdir = os.path.join(config.CONTENT_DIR, subdir)
 	
 	filename_pdf = filename_md.split('.')[0]+'.pdf'
 	
@@ -41,7 +41,7 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	# create pandoc options for title block values
 	opts = []
 	for index, tb_value in enumerate(title_block_vals):
-		opts.append('--variable='+REGULAR_TB_LINES[index]+':'+tb_value)
+		opts.append('--variable='+config.REGULAR_TB_LINES[index]+':'+tb_value)
 	
 	# create a temporary working directory for pandoc,
 	# to avoid cluttering the cms root

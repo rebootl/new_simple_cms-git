@@ -15,7 +15,7 @@ import subprocess
 import re
 
 # global config variables
-from config import *
+import config
 
 
 # Functions
@@ -45,14 +45,14 @@ Returns a list of subdirs w/o CONTENT_DIR.'''
 	
 	subdirs=[]
 	# trying some os walk opts
-	for dir, dirs, files in os.walk(os.path.join(CONTENT_DIR, refresh_dir)):
+	for dir, dirs, files in os.walk(os.path.join(config.CONTENT_DIR, refresh_dir)):
 		# (debug-info's)
 		#print('Dir:', dir)
 		#print('Dirs:', dirs)
 		#print('Files:', files)
 		
 		# remove the CONTENT_DIR from path
-		subdir=os.path.relpath(dir, CONTENT_DIR)
+		subdir=os.path.relpath(dir, config.CONTENT_DIR)
 		
 		subdirs.append(subdir)
 	
@@ -69,9 +69,9 @@ def copy_file(subdir, file):
 Using the CONTENT_DIR and PUBLISH_DIR variables.'''
 	#
 	# input file
-	in_file=os.path.join(CONTENT_DIR, subdir, file)
+	in_file=os.path.join(config.CONTENT_DIR, subdir, file)
 	# output directory
-	out_dir=os.path.join(PUBLISH_DIR, subdir)
+	out_dir=os.path.join(config.PUBLISH_DIR, subdir)
 	# using cp -u (update, cp only if newer) 
 	#  -d (preserve links --> links are handled separately now)
 	cp_command=['cp', '-u', in_file, out_dir]
@@ -91,9 +91,9 @@ def copy_file_abs(inpath, out_dir):
 
 def make_linkfile(subdir, link):
 	'''Make a file for links.'''
-	linkpath=os.path.join(CONTENT_DIR, subdir, link)
+	linkpath=os.path.join(config.CONTENT_DIR, subdir, link)
 	
-	out_dir=os.path.join(PUBLISH_DIR, subdir)
+	out_dir=os.path.join(config.PUBLISH_DIR, subdir)
 	
 	targetpath=os.path.realpath(linkpath)
 	fileinfo="This file was created by the website CMS new_simple_cms (powered by Python)."
@@ -136,7 +136,7 @@ Target file content:
 
 def copy_remaining_content(subdir):
 	'''Copy the remaining folder content.'''
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 
 	# get the dir content
 	filelist=os.listdir(dir)
@@ -144,7 +144,7 @@ def copy_remaining_content(subdir):
 	# filter out dirs
 	remove_list=[]
 	for file in filelist:
-		if os.path.isdir(os.path.join(CONTENT_DIR, subdir, file)):
+		if os.path.isdir(os.path.join(config.CONTENT_DIR, subdir, file)):
 			remove_list.append(file)
 
 	# filter out markdown files
@@ -173,7 +173,7 @@ Different filtering than copy_remaining_content.
 (For listing pages we want everything exept listing.markdown.)
 Added exceptionally special handling for links...'''
 	
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 	
 	# get the dir content
 	filelist=os.listdir(dir)
@@ -182,15 +182,15 @@ Added exceptionally special handling for links...'''
 	link_list=[]
 	# filter out links and add them to a separate list
 	for file in filelist:
-		if os.path.islink(os.path.join(CONTENT_DIR, subdir, file)) and os.path.isdir(os.path.join(CONTENT_DIR, subdir, file)):
+		if os.path.islink(os.path.join(config.CONTENT_DIR, subdir, file)) and os.path.isdir(os.path.join(config.CONTENT_DIR, subdir, file)):
 			link_list.append(file)
-		elif os.path.islink(os.path.join(CONTENT_DIR, subdir, file)) and not os.path.isdir(os.path.join(CONTENT_DIR, subdir, file)):
+		elif os.path.islink(os.path.join(config.CONTENT_DIR, subdir, file)) and not os.path.isdir(os.path.join(config.CONTENT_DIR, subdir, file)):
 			link_list.append(file)
 			remove_list.append(file)
 	
 	# filter out dirs
 	for file in filelist:
-		if os.path.isdir(os.path.join(CONTENT_DIR, subdir, file)):
+		if os.path.isdir(os.path.join(config.CONTENT_DIR, subdir, file)):
 			remove_list.append(file)
 	
 	# filter out the listing page
@@ -362,11 +362,11 @@ def get_index_path(dir):
 (_always_ return the file + the path !)'''
 	
 	index_page_md=''
-	for file in os.listdir(os.path.join(CONTENT_DIR, dir)):
+	for file in os.listdir(os.path.join(config.CONTENT_DIR, dir)):
 		if 'index' in file:
 			# using only one type of subcontent by now !
 			# --> corrected using multiple types again
-			for type in SUBCONTENT_TYPES:
+			for type in config.SUBCONTENT_TYPES:
 				if not type in file:
 					index_page_md=file
 	# get the index page

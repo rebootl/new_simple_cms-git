@@ -24,7 +24,7 @@ import re
 import shutil
 
 # global config variables
-from config import *
+import config
 
 # common
 from modules.common import copy_file_abs
@@ -81,7 +81,7 @@ def check_mp(subdir):
 	'''Quick check if there's an .mp file.
 
 Returning the Metapost file if found or False.'''
-	dir = os.path.join(CONTENT_DIR, subdir)
+	dir = os.path.join(config.CONTENT_DIR, subdir)
 	dir_content = os.listdir(dir)
 	
 	for file in dir_content:
@@ -107,7 +107,7 @@ def handle_metapost(subdir):
 	#outdir = os.path.join(CONTENT_DIR, subdir)
 	
 	# read the mp file
-	mp_filepath = os.path.join(CONTENT_DIR, subdir, mp_file)
+	mp_filepath = os.path.join(config.CONTENT_DIR, subdir, mp_file)
 	
 	with open(mp_filepath, 'r') as f:
 		mp = f.read()
@@ -163,7 +163,7 @@ def process_metapost(subdir, filename, mp):
 	# set out dir
 	# (setting this to content, for now)
 	# (eps files for PDF creation have to be there, see below)
-	outdir = os.path.join(CONTENT_DIR, subdir)
+	outdir = os.path.join(config.CONTENT_DIR, subdir)
 	
 	# create a temporary working directory
 	tmp_wd_obj = tempfile.TemporaryDirectory()
@@ -232,7 +232,7 @@ def process_metapost(subdir, filename, mp):
 		for eps_file in eps_files:
 			
 			inpath = os.path.join(tmp_wd, eps_file)
-			outdir = os.path.join(CONTENT_DIR, subdir)
+			outdir = os.path.join(config.CONTENT_DIR, subdir)
 			
 			# (debug-print)
 			#print("inpath: ", inpath)

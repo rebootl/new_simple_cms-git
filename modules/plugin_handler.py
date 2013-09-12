@@ -8,13 +8,16 @@ Plugin handling functions.'''
 import re
 
 # global config variables
-from config import *
+import config
 
 # plugins
 from plugins.insert_file.insert_file import insert_file
 from plugins.gallery.gallery import gallery
 from plugins.tree.tree import tree
 from plugins.metapost.metapost import metapost, metapost_ext
+
+# Settings
+PLUGIN_PLACEHOLDER='<div id="placeholder"></div>'
 
 # Functions
 

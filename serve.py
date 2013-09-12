@@ -1,22 +1,21 @@
 #!/usr/bin/python
-#
-# Simple webserver for testing purposes.
-#
-# Using the python module http.server.
-#
-# Trying to enable CGI...
-#
-##
+'''Simple webserver for testing purposes.
 
-## Import modules:
+Using the python module http.server.
+
+CGI enabled.'''
+
+# Import 
+# python modules
 import os
 from http.server import HTTPServer, CGIHTTPRequestHandler
 
-## Import config:
-from config import *
+# config
+#from config import *
+import config
 
 ## Change WD:
-os.chdir(PUBLISH_DIR)
+os.chdir(config.PUBLISH_DIR)
 
 ## Server:
 serve=HTTPServer(('', 8000), CGIHTTPRequestHandler)

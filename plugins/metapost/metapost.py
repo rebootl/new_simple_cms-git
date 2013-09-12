@@ -35,7 +35,7 @@ e.g. the default template, resolution, size are defined in modules.metapost_hand
 import os
 
 # global config variables
-from config import *
+import config
 
 # processing function
 from modules.metapost_handler import process_metapost, MP_EXT, check_mp
@@ -77,7 +77,7 @@ Using the processing function from modules.metapost_handler.'''
 	img_tag = IMG_TAG.format(alt=img_alt, src=img_src)
 	
 	# PDF production
-	if PRODUCE_PDF:
+	if config.PRODUCE_PDF:
 		eps_filename = BASE_FILE_NAME+'-'+fig_num+'.eps'
 		
 		img_tag_md = "!["+img_alt+"]("+eps_filename+")"
@@ -92,7 +92,7 @@ Using the processing function from modules.metapost_handler.'''
 def metapost_ext(subdir, plugin_in):
 	'''Insert image tags/references.'''
 	
-	dir = os.path.join(CONTENT_DIR, subdir)
+	dir = os.path.join(config.CONTENT_DIR, subdir)
 	
 	# find the corresponding .mp file
 	mp_file = check_mp(subdir)
@@ -112,11 +112,11 @@ def metapost_ext(subdir, plugin_in):
 	
 	# create tag
 	img_tag = IMG_TAG.format(alt=fig_desc, src=png_filename)
-	desc_tag = DESC_TAG.format(n=fig_num, description=fig_desc)
+	desc_tag = DESC_TAG.format(n=fig_num, desc=fig_desc)
 	full_tag = img_tag+desc_tag
 	
 	# PDF production
-	if PRODUCE_PDF:
+	if config.PRODUCE_PDF:
 		eps_filename = mp_filename+'-'+fig_num+'.eps'
 		img_tag_md = "!["+fig_desc+"]("+eps_filename+")"
 	

@@ -76,7 +76,10 @@ import argparse
 
 # global config variables
 # (Importing * here, the global config variables are identified by capital letters.)
-from config import *
+# --> better use import config
+# (global variables can be changed using this)
+#from config import *
+import config
 
 # modules
 from modules.processing import process_dir, preprocess_page_group, prepare_final, process_page
@@ -120,7 +123,7 @@ def make_regular_pages(pages_struct, subdir):
 		print('Page group:', page_group)
 		
 		# Add in Metapost support
-		if PROCESS_MP:
+		if config.PROCESS_MP:
 			handle_metapost(subdir)
 		
 		## 2.1.) Call preprocess_page_group:
@@ -128,7 +131,7 @@ def make_regular_pages(pages_struct, subdir):
 		#page_subcontent=preprocess_page_group(subdir, page_group)
 		
 		# PDF production
-		if PRODUCE_PDF:
+		if config.PRODUCE_PDF:
 			print("Produce a PDF.")
 			# plugins must provide blocks for pdf's
 			# (setting to [] for development,
@@ -176,12 +179,12 @@ def make_listing_page(subdir):
 	listing_page_md=get_listing_page(subdir)
 	
 	if listing_page_md != '':
-		infile=os.path.join(CONTENT_DIR, subdir, listing_page_md)
+		infile=os.path.join(config.CONTENT_DIR, subdir, listing_page_md)
 		opts=[]
 		
 		# adding title block extraction here
 		#  (Using them only for the final output below, atm.)
-		listing_page_body, title_block_vals=extract_title_block(infile, REGULAR_TB_LINES)
+		listing_page_body, title_block_vals=extract_title_block(infile, config.REGULAR_TB_LINES)
 		
 		listing_body_doctype=scan_doctype(listing_page_body)
 		
@@ -203,16 +206,16 @@ def make_listing_page(subdir):
 	## get/set the parent dir (for the path line)
 	#   this should go in a separate funtion, but it doesn't work
 	#getset_parent_dir(subdir)
-	global LISTING_PARENT_DIR
-	if LISTING_PARENT_DIR == '' :
-		LISTING_PARENT_DIR=subdir
-	elif LISTING_PARENT_DIR in subdir:
+	# --> now using import config, this could be improved ...
+	if config.LISTING_PARENT_DIR == '' :
+		config.LISTING_PARENT_DIR=subdir
+	elif config.LISTING_PARENT_DIR in subdir:
 		pass
-	else: LISTING_PARENT_DIR=subdir
+	else: config.LISTING_PARENT_DIR=subdir
 	# (debug-info)
 	#print('Subdir:', subdir)
 	#print('Parent dir:', LISTING_PARENT_DIR)
-	parent_dir=LISTING_PARENT_DIR
+	parent_dir=config.LISTING_PARENT_DIR
 	
 	# generate the path line
 	listing_path_items=gen_listing_path_items(subdir, parent_dir, listing_page_md)
@@ -272,7 +275,7 @@ def refresh_subdirs_recursive(refresh_dir):
 	
 	# process dirs
 	for subdir in subdirs:
-		print('Processing: ', os.path.join(CONTENT_DIR, subdir))
+		print('Processing: ', os.path.join(config.CONTENT_DIR, subdir))
 		## 2.) Call process_dir:
 		pages_struct=process_dir(subdir)
 		
@@ -332,8 +335,8 @@ def main():
 			sys.exit()
 			
 		# check file
-		if not os.path.isfile(os.path.join(CONTENT_DIR, filepath)):
-			print("File not found... leaving. File:", os.path.join(CONTENT_DIR, filepath))
+		if not os.path.isfile(os.path.join(config.CONTENT_DIR, filepath)):
+			print("File not found... leaving. File:", os.path.join(config.CONTENT_DIR, filepath))
 			sys.exit()
 		
 		pagename=os.path.basename(filepath)
@@ -344,7 +347,7 @@ def main():
 	# -o ONLY_SUBDIR
 	elif args.only_subdir:
 		# check subdir
-		if not os.path.isdir(os.path.join(CONTENT_DIR, filepath)):
+		if not os.path.isdir(os.path.join(config.CONTENT_DIR, filepath)):
 			print("Directory not found... Leaving.")
 			sys.exit()
 		
@@ -353,7 +356,7 @@ def main():
 	# default (recursive)
 	else:
 		# check subdir
-		if not os.path.isdir(os.path.join(CONTENT_DIR, filepath)):
+		if not os.path.isdir(os.path.join(config.CONTENT_DIR, filepath)):
 			print("Directory not found... Leaving.")
 			sys.exit()
 		

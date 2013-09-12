@@ -9,7 +9,7 @@ within a directory.'''
 import os
 
 # import global config variables
-from config import *
+import config
 
 # and common functions
 from .common import pandoc_pipe, get_index_path, extract_title_block_only
@@ -21,7 +21,7 @@ def generate_section_menu(subdir, active_page):
 	# always set the index page as first
 	# first check if there are other pages in the subdir
 	
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 	
 	# get the remaining pages
 	pages=[]
@@ -36,13 +36,13 @@ def generate_section_menu(subdir, active_page):
 	# remove the subcontents
 	for file in pages:
 		# only using one type of subcontent by now !
-		for type in SUBCONTENT_TYPES:
+		for type in config.SUBCONTENT_TYPES:
 			if type in file:
 				remove_list.append(file)
 	
 	# remove hidden pages (e.g. a page you don't want to show up in the menu)
 	for file in pages:
-		for name in HIDDEN_PAGE_NAMES:
+		for name in config.HIDDEN_PAGE_NAMES:
 			if file.__contains__(name):
 				remove_list.append(file)
 	
@@ -72,7 +72,7 @@ def generate_section_menu(subdir, active_page):
 	# get the page titles
 	titles=[]
 	for page in pages:
-		filepath=os.path.join(CONTENT_DIR, subdir, page)
+		filepath=os.path.join(config.CONTENT_DIR, subdir, page)
 		title=extract_title_block_only(filepath, ['title'])
 		titles.append(title[0])
 	
@@ -88,18 +88,18 @@ def generate_section_menu(subdir, active_page):
 	# make the line variables
 	lines=[]
 	for index, page in enumerate(pages):
-		class_str='class="%s"'
+		class_str='class="{}"'
 		if page == active_page_html:
-			class_str_cpl=class_str % ACTIVE_CLASS_NAME
+			class_str_cpl=class_str.format(config.ACTIVE_CLASS_NAME)
 		else:
-			class_str_cpl=class_str % ''
+			class_str_cpl=class_str.format('')
 		
 		# define the line here
 		# --> could be defined in the config...
-		link_line_str='<a %s href="%s">%s</a>'
+		link_line_str='<a {} href="{}">{}</a>'
 		
 		# substitution
-		link_line_subst=link_line_str % (class_str_cpl, page, titles[index])
+		link_line_subst=link_line_str.format(class_str_cpl, page, titles[index])
 		
 		lines.append(link_line_subst)
 	

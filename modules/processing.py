@@ -10,7 +10,7 @@ import glob
 import subprocess
 
 # global config variables
-from config import *
+import config
 
 # common functions
 from .common import pandoc_final, pandoc_pipe_from_file, pandoc_pipe, extract_title_block, scan_doctype
@@ -96,11 +96,11 @@ def preprocess_page_group(subdir, page_group):
 Returns the substituted main body.
 And the plugin blocks and the title block as lists.'''
 	
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 	file_markdown=os.path.join(dir, page_group[0])
 	
 	## Read out the main page and title block:
-	main_page_body, main_page_tb_vals=extract_title_block(file_markdown, REGULAR_TB_LINES)
+	main_page_body, main_page_tb_vals=extract_title_block(file_markdown, config.REGULAR_TB_LINES)
 	
 	## Preprocess the subcontent:
 	#
@@ -110,19 +110,19 @@ And the plugin blocks and the title block as lists.'''
 	subcontent_pages.reverse()
 	
 	for subcontent_page in subcontent_pages:
-		subcontent_file=os.path.join(CONTENT_DIR, subdir, subcontent_page)
+		subcontent_file=os.path.join(config.CONTENT_DIR, subdir, subcontent_page)
 		
 		## Get the subcontent type of this page:
-		for subcontent_type in SUBCONTENT_TYPES:
+		for subcontent_type in config.SUBCONTENT_TYPES:
 			if subcontent_type in subcontent_page:
 				page_type=subcontent_type
 		
 		## Read out the body and title block:
 		## Special feature - include a custom title block !
-		if page_type in INCLUDE_CUSTOM_TB:
+		if page_type in config.INCLUDE_CUSTOM_TB:
 			# call the extract titleblock function
-			sub_page_body, sub_tb_vals=extract_title_block(subcontent_file, CUSTOM_TB_LINES)
-		else: sub_page_body, sub_tb_vals=extract_title_block(subcontent_file, REGULAR_TB_LINES)
+			sub_page_body, sub_tb_vals=extract_title_block(subcontent_file, config.CUSTOM_TB_LINES)
+		else: sub_page_body, sub_tb_vals=extract_title_block(subcontent_file, config.REGULAR_TB_LINES)
 		
 		## Handling has to be defined for every subcontent type here!
 		##  + A handler function has to be written for it (if necessary) !
@@ -148,7 +148,7 @@ And the plugin blocks and the title block as lists.'''
 	## Preprocess math content
 	# similar to plugins math content is handled here by my own functions
 	# (see the math_handler module)
-	if PROCESS_MATH:
+	if config.PROCESS_MATH:
 		main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
 		return main_page_body_subst_m, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
 	
@@ -169,7 +169,7 @@ Used to only refersh a single page. (But with it's subontent !)
 
 Returns the pages_struct.'''
 	
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 	dir_content=os.listdir(dir)
 	
 	## Check if there's an index file:
@@ -198,7 +198,7 @@ Returns the pages_struct.'''
 	
 	subcontent_pages=[]
 	for file in markdown_filelist:
-		for type in SUBCONTENT_TYPES:
+		for type in config.SUBCONTENT_TYPES:
 			if type in file and main_page_name in file:
 				if not file in subcontent_pages:
 					subcontent_pages.append(file)
@@ -213,7 +213,7 @@ def process_dir(subdir):
 Doing this directory wise, for the directories in content, incl. '.'.
 
 Returns the pages_struct. A nested list.'''
-	dir=os.path.join(CONTENT_DIR, subdir)
+	dir=os.path.join(config.CONTENT_DIR, subdir)
 	dir_content=os.listdir(dir)
 	
 	## Check if there's an index file:
@@ -240,7 +240,7 @@ Returns the pages_struct. A nested list.'''
 	main_pages=[]
 	subcontent_pages=[]
 	for file in markdown_filelist:
-		for type in SUBCONTENT_TYPES:
+		for type in config.SUBCONTENT_TYPES:
 			### ---> this function is erroneaus, cause it would cause
 			###       multiple appends if there is more than one type !!! <---
 			### it does... removing the types !
@@ -283,15 +283,15 @@ Returns options for final Pandoc run and output path.'''
 	#
 	# out file, should be html
 	page_name=page_group[0].split('.')[0]
-	out_filepath=os.path.join(PUBLISH_DIR, subdir, page_name+'.html')
+	out_filepath=os.path.join(config.PUBLISH_DIR, subdir, page_name+'.html')
 	
 	final_opts=[]
 	
 	# set the doctype
 	if body_doctype == 'transitional':
-		final_opts.append('--variable=doctype:'+DOCTYPE_STRING_TRANSITIONAL)
+		final_opts.append('--variable=doctype:'+config.DOCTYPE_STRING_TRANSITIONAL)
 	else:
-		final_opts.append('--variable=doctype:'+DOCTYPE_STRING_STRICT)
+		final_opts.append('--variable=doctype:'+config.DOCTYPE_STRING_STRICT)
 	
 	# main menu
 	final_opts.append('--variable=main-menu:'+main_menu)
@@ -304,14 +304,14 @@ Returns options for final Pandoc run and output path.'''
 	
 	# title block
 	for index, tb_value in enumerate(title_block_vals):
-		final_opts.append('--variable='+REGULAR_TB_LINES[index]+':'+tb_value)
+		final_opts.append('--variable='+config.REGULAR_TB_LINES[index]+':'+tb_value)
 	
 	# include a table of content
 	final_opts.append('--toc')
-	final_opts.append('--toc-depth='+TOC_DEPTH)
+	final_opts.append('--toc-depth='+config.TOC_DEPTH)
 	
 	# set the final template
-	final_opts.append('--template='+MAJOR_TEMPLATE)
+	final_opts.append('--template='+config.MAJOR_TEMPLATE)
 	
 	# (debug-info)
 	#print("Final opts (section menu):", final_opts)

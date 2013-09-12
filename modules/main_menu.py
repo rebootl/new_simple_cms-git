@@ -9,7 +9,7 @@ directory structure.'''
 import os
 
 # import global config variables
-from config import *
+import config
 
 # and common functions
 from .common import pandoc_pipe, get_index_path
@@ -20,8 +20,8 @@ from .common import pandoc_pipe, get_index_path
 def make_folders_struct(active_dir):
 	# replacement for the way too complicated recurse_dir function (above, removed).
 	run_count=0
-	for dir, dirs, files in os.walk(CONTENT_DIR):
-		relpath=os.path.relpath(dir, CONTENT_DIR)
+	for dir, dirs, files in os.walk(config.CONTENT_DIR):
+		relpath=os.path.relpath(dir, config.CONTENT_DIR)
 		if run_count == 0 :
 			folders_struct=[dirs]
 		
@@ -33,7 +33,7 @@ def make_folders_struct(active_dir):
 				#print('Dir:', dir)
 				#print('Appending dirs:', dirs)
 				full_names=[]
-				dir_path=os.path.relpath(dir, CONTENT_DIR)
+				dir_path=os.path.relpath(dir, config.CONTENT_DIR)
 				for subdir in dirs:
 					full_name=os.path.join(dir_path, subdir)
 					full_names.append(full_name)
@@ -61,11 +61,11 @@ def make_submenus_struct(folders_struct, active_dir, active_page):
 	submenus_struct=[]
 	
 	# insert the home
-	folders_struct[0].insert(0, HOME_NAME)
+	folders_struct[0].insert(0, config.HOME_NAME)
 	
 	# make custom menu order if set
-	if CUSTOM_MENU_ORDER != []:
-		folders_struct[0]=CUSTOM_MENU_ORDER
+	if config.CUSTOM_MENU_ORDER != []:
+		folders_struct[0]=config.CUSTOM_MENU_ORDER
 		
 	# sort the items from second level on
 	for item in folders_struct[1:]:
@@ -83,13 +83,13 @@ def make_submenus_struct(folders_struct, active_dir, active_page):
 			#print('Dir:', dir)
 			
 			# define the link line
-			link_line='<a %s href="%s">%s</a>'
+			link_line='<a {} href="{}">{}</a>'
 			
-			if dir == HOME_NAME:
+			if dir == config.HOME_NAME:
 				# settings for home
 				index_path='./index.html'
 				
-				name=HOME_NAME
+				name=config.HOME_NAME
 				link='index.html'
 				
 			else:	
@@ -122,25 +122,25 @@ def make_submenus_struct(folders_struct, active_dir, active_page):
 			class_type=''
 			if active_dir == os.path.dirname(index_path):
 				# exclude the hidden pages
-				for hidden_page_name in HIDDEN_PAGE_NAMES:
+				for hidden_page_name in config.HIDDEN_PAGE_NAMES:
 					if not hidden_page_name in active_page:
 					### --> this is erroneous, causing multiple appends,
 					###      if there are multiple hidden pages...
 						
 						# anyways using a string now
-						class_type='class="'+ACTIVE_CLASS_NAME+'"'
+						class_type='class="'+config.ACTIVE_CLASS_NAME+'"'
 			
 			# listing dirs should stay active, when browsing subdirs...
 			elif index_path.endswith('listing.html'):
 				if os.path.dirname(index_path) in active_dir:
-					class_type='class="'+ACTIVE_CLASS_NAME+'"'
+					class_type='class="'+config.ACTIVE_CLASS_NAME+'"'
 			
 			# set the strings (unnecessary...)
 			link_name=name
 			link_ref=link
 			
 			## Make the line.
-			line=link_line % (class_type, link_ref, link_name)
+			line=link_line.format(class_type, link_ref, link_name)
 			lines.append(line)
 		
 		submenus_struct.append(lines)

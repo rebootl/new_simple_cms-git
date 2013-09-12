@@ -21,7 +21,7 @@ import os
 import subprocess
 
 # global config variables
-from config import *
+import config
 
 # common functions
 #from modules.common import pandoc_pipe
@@ -69,7 +69,7 @@ def tree(subdir, plugin_in):
 		
 	# find the dir
 	if not os.path.isabs(directory_in):
-		directory_real=os.path.join(CONTENT_DIR, subdir, directory_in)
+		directory_real=os.path.join(config.CONTENT_DIR, subdir, directory_in)
 	
 	else:
 		directory_real=directory_in
@@ -128,7 +128,7 @@ def tree(subdir, plugin_in):
 	# (debug-info)
 	#print(tree_html_lines)
 	
-	if PRODUCE_PDF:
+	if config.PRODUCE_PDF:
 		# trying to insert HTML
 		# --> _bad_, latex doesn't understand utf8/unicode (? what's the difference ?)
 		# ==> here we need an ascii output of tree, _nice_

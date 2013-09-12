@@ -20,7 +20,7 @@ directory the plugin is used. Or an absolute path.'''
 import os
 
 # global config variables
-from config import *
+import config
 
 # common functions
 from modules.common import pandoc_pipe
@@ -38,7 +38,7 @@ def insert_file(subdir, plugin_in):
 	
 	# find out where the file lies
 	if not os.path.isabs(file_in):
-		filepath=os.path.join(CONTENT_DIR, subdir, file_in)
+		filepath=os.path.join(config.CONTENT_DIR, subdir, file_in)
 	
 	else:
 		filepath=file_in
@@ -87,7 +87,7 @@ def insert_file(subdir, plugin_in):
 	file_content_html_title=title_line+'\n'+file_content_html
 	
 	# PDF production
-	if PRODUCE_PDF:
+	if config.PRODUCE_PDF:
 		# create a title
 		title_md = "File: "+filename+"\n"
 		# (debug)

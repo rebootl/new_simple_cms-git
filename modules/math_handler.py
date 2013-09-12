@@ -29,7 +29,7 @@ import tempfile
 import subprocess
 
 # global config variables
-from config import *
+import config
 
 # Settings
 # subdirectory name for images
@@ -101,7 +101,7 @@ But if there's none we're faster. Could be done otherwise though.)'''
 def process_formulas(subdir, texmath_formulas):
 	'''Process texmath formulas and return HTML code that replaces them.'''
 	# set/create the _final_ output directory
-	outdir_sub_full = os.path.join(PUBLISH_DIR, subdir, IMG_DIR)
+	outdir_sub_full = os.path.join(config.PUBLISH_DIR, subdir, IMG_DIR)
 	
 	if not os.path.isdir(outdir_sub_full):
 		os.makedirs(outdir_sub_full)

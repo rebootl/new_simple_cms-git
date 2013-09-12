@@ -25,7 +25,7 @@ import os
 import subprocess
 
 # global config variables
-from config import *
+import config
 
 # common functions
 from modules.common import pandoc_pipe
@@ -62,7 +62,7 @@ def gallery(subdir, plugin_in):
 	
 	## Handle the images:
 	# set the out dir
-	images_out_dir=os.path.join(PUBLISH_DIR, subdir, gallery_name)
+	images_out_dir=os.path.join(config.PUBLISH_DIR, subdir, gallery_name)
 	
 	# get the images
 	filelist=os.listdir(gallery_dir)
@@ -125,7 +125,7 @@ def gallery(subdir, plugin_in):
 	
 	# output for PDF production
 	# (returning raw content + remark, atm)
-	if PRODUCE_PDF:
+	if config.PRODUCE_PDF:
 		pdf_md = "[[ GALLERY ] [ "+plugin_in+" ]  \n(Gallery plugin, PDF output not yet supported.)\n"
 		print("pdf md: ", pdf_md)
 	else:
