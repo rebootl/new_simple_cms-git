@@ -1,7 +1,8 @@
 '''Config file for new_simple_cms.py.
 
-Defining global variables here.'''
-# (This has to be imported into every submodule!)
+General settings and default values are defined here as global variables.
+Specific ones are set in the respective module/plugin.'''
+# (This has to be imported into every module/submodule.)
 
 
 ### General
@@ -38,33 +39,9 @@ TEMPLATES_DIR='templates'
 # (Containing page layout, header, footer, menu's etc..)
 MAJOR_TEMPLATE='templates/base.html'
 
-## Default template for the menu:
-#   (Used for the main-menu.)
-# This option is deprecated, cause the main-menu is created
-#  (quick and dirty) by pandoc and markdown now.
-#MENU_TEMPLATE='templates/main-menu.html'
-#
-## A default template containing one menu line:
-#   (Used for the main-menu.)
-# This option is deprecated, cause the main-menu is created
-#  (quick and dirty) by pandoc and markdown now.
-#MENU_LINE_TEMPLATE='templates/menu-line.html'
-
-## Default template containing one link line:
-#   (Used for the section-menu.) --> not used anymore
-#LINK_LINE_TEMPLATE='templates/link-line.html'
-
 # The final directory listing page template
 # (Maybe the base template could be used...)
 LISTING_TEMPLATE='templates/listing.html'
-
-## Directory listing table template:
-# --> Deprecated, listing table is "hard coded" in listing.py (faster and better)
-#LISTING_TABLE_TEMPLATE='templates/listing-table.html'
-
-## Directory listing table entry template:
-# --> Deprecated, listing table is "hard coded" in listing.py (faster and better)
-#LISTING_TABLE_LINE_TEMPLATE='templates/listing-table-line.html'
 
 # Default doctype strings for xhtml 1 strict and transitional
 DOCTYPE_STRING_STRICT='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"\n  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
@@ -73,10 +50,6 @@ DOCTYPE_STRING_TRANSITIONAL='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transi
 
 ### Menu's
 #
-# Name to use for the CSS class for active pages
-# (Used for the active link in the menu!)
-ACTIVE_CLASS_NAME='Active'
-
 # Main menu
 # Name to use for homepage (index.html)
 HOME_NAME='Home'
@@ -93,6 +66,10 @@ CUSTOM_MENU_ORDER=['Home', 'Projects', 'About me', 'Uploads']
 # Hidden page names
 # Full or partial names of pages you don't want to appear in the section menu.
 HIDDEN_PAGE_NAMES=['impressum']
+
+# Name to use for the CSS class for active pages
+# (Used for the active link in the menus!)
+ACTIVE_CLASS_NAME='Active'
 
 
 ### Subcontent
@@ -122,16 +99,14 @@ LINK_CLASS_NAME='Link'
 BROKENLINK_CLASS_NAME='BrokenLink'
 # Default value
 # (Need a global variable here. Should be empty.)
-# --> needed ? <--
+# --> needed ?
+# ==> yes, atm (evtl. find a better solution for this)
 LISTING_PARENT_DIR=''
 
 
 ### Plugins
 #
-# Default placeholder for plugin processing
-# (Using the fact here that pandoc passes through HTML !)
-# --> define in modules.plugin_handler
-#PLUGIN_PLACEHOLDER='<div id="placeholder"></div>'
+# Default values are set in the respective plugin.
 
 
 ### Extensions
