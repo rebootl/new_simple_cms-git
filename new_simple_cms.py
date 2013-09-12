@@ -302,7 +302,8 @@ def main():
 	# add optional arguments
 	# --> leads to problems at importing
 	# --> need to find a solution for global controller variables
-	#parser.add_argument('--pdf', help="produce a PDF file for every page", action="store_true")
+	# ==> changed import method for global variables, should work now
+	parser.add_argument('--pdf', help="produce a PDF file for every page", action="store_true")
 	
 	# (grouping)
 	group=parser.add_mutually_exclusive_group()
@@ -316,10 +317,9 @@ def main():
 	
 	filepath=args.PATH
 	# --pdf
-	#if args.pdf:
-	#	global PRODUCE_PDF
-	#	# set global config variable
-	#	PRODUCE_PDF = True
+	if args.pdf:
+		# set global config variable
+		config.PRODUCE_PDF = True
 	
 	# -f FILE
 	if args.file:
