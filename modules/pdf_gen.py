@@ -1,6 +1,13 @@
-'''Modules of new_simple_cms
+'''Module of new_simple_cms
 
 Generate a PDF from input stream.
+
+Atm PDF's are created in the respective content subdirectory.
+They are then copied to the publish subdirectory amongst the other
+remaining files.
+To remove them completely they have to be deleted on both locations.
+(This is suboptimal and may lead to confusion but it's needed for the 
+inserted images.) --> improve
 
 Using Pandoc.'''
 
