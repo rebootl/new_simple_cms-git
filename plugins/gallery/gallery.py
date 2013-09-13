@@ -3,9 +3,9 @@
 
 Insert an image gallery.
 
-CDATA syntax:
+MD syntax:
 
-<![GALLERY[directory]]>
+[[ GALLERY ][ directory ]]
 
 Where _directory_ should be a directory containing the images.
 (If you don't want the directory to appear on the website it should be outside of content. 
@@ -124,13 +124,38 @@ def gallery(subdir, plugin_in):
 	gallery_html=pandoc_pipe('', opts)
 	
 	# output for PDF production
-	# (returning raw content + remark, atm)
 	if config.PRODUCE_PDF:
-		pdf_md = "[[ GALLERY ] [ "+plugin_in+" ]  \n(Gallery plugin, PDF output not yet supported.)\n"
-		print("pdf md: ", pdf_md)
+		# returning raw content + remark
+		#pdf_md = "[[ GALLERY ] [ "+plugin_in+" ]  \n(Gallery plugin, PDF output not yet supported.)\n"
+		# (debug-print)
+		#print("pdf md: ", pdf_md)
+		
+		# inserting images
+		# (sort list)
+		image_list.sort()
+		
+		# (MD)
+		md_text = "Images  \n"
+		
+		# (adding an MD image reference for every image)
+		for image in image_list:
+			
+			# (we need the absolute path for the PDF production)
+			cwd = os.getcwd()
+			images_out_dir_abs = os.path.join(cwd, images_out_dir)
+			
+			img_name = MAIN_IMAGE_PREFIX+image
+			
+			img_src = os.path.join(images_out_dir_abs, img_name)
+			img_alt = ''
+			
+			md_ref = "![ {alt} ]({src})\n".format(alt=img_alt, src=img_src)
+			md_text = md_text+md_ref
+			
+		pdf_md = md_text
+		
 	else:
 		pdf_md = ""
 	
 	return gallery_html, pdf_md
 	
-
