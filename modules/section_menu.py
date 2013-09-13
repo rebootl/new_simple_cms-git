@@ -28,7 +28,7 @@ def generate_section_menu(subdir, active_page):
 	files=os.listdir(dir)
 
 	for file in files:
-		if file.endswith('.markdown'):
+		if file.endswith(config.MD_EXT):
 			pages.append(file)
 	
 	# make a remove list

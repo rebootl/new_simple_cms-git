@@ -190,7 +190,7 @@ Returns the pages_struct.'''
 	## Get all .markdown files:
 	markdown_filelist=[]
 	for file in dir_content:
-		if file.endswith('.markdown'):
+		if file.endswith(config.MD_EXT):
 			markdown_filelist.append(file)
 	
 	# get the main page name
@@ -233,7 +233,7 @@ Returns the pages_struct. A nested list.'''
 	## Get all .markdown files:
 	markdown_filelist=[]
 	for file in dir_content:
-		if file.endswith('.markdown'):
+		if file.endswith(config.MD_EXT):
 			markdown_filelist.append(file)
 	
 	## Filter main and subcontent pages:

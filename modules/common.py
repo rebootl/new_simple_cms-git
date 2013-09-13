@@ -149,7 +149,7 @@ def copy_remaining_content(subdir):
 
 	# filter out markdown files
 	for file in filelist:
-		if file.endswith('.markdown'):
+		if file.endswith(config.MD_EXT):
 			remove_list.append(file)
 
 	# more filters might be specified here
@@ -195,7 +195,7 @@ Added exceptionally special handling for links...'''
 	
 	# filter out the listing page
 	for file in filelist:
-		if file.endswith('.markdown') and 'listing' in file:
+		if file.endswith(config.MD_EXT) and 'listing' in file:
 			remove_list.append(file)
 	
 	# more filters might be specified here

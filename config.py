@@ -29,6 +29,10 @@ REGULAR_TB_LINES=['title', 'author', 'date']
 # The level of HTML headers to be included.
 TOC_DEPTH='5'
 
+# Extension for Markdown files
+# (Will be used when looking for MD input files.)
+MD_EXT = '.markdown'
+
 
 ### Templates
 #

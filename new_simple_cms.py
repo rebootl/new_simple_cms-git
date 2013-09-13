@@ -325,11 +325,11 @@ def main():
 	if args.file:
 		# check filename
 		if '.' not in filepath:
-			filepath=filepath+".markdown"
-		elif filepath.endswith(".markdown"):
+			filepath = filepath+config.MD_EXT
+		elif filepath.endswith(config.MD_EXT):
 			pass
 		elif filepath.endswith(".html"):
-			filepath=filepath.split(".")[0]+".markdown"
+			filepath=filepath.split(".")[0]+config.MD_EXT
 		else:
 			print("Wrong file type extension, should be None, .markdown or .html (.markdown will be used)... Leaving.")
 			sys.exit()
