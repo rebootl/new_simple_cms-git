@@ -317,9 +317,10 @@ Returns options for final Pandoc run and output path.'''
 	#print("Final opts (section menu):", final_opts)
 	
 	# include a reference to the pdf
-	if config.PRODUCE_PDF:
-		pdf_ref = page_name+'.pdf'
-		final_opts.append('--variable=pdf-ref:'+pdf_ref)
+	# (add it always)
+	#if config.PRODUCE_PDF:
+	pdf_ref = page_name+'.pdf'
+	final_opts.append('--variable=pdf-ref:'+pdf_ref)
 	
 	return final_opts, out_filepath
 	
