@@ -1,7 +1,7 @@
 # .gitignore file for new_simple_cms
 # (ignore content and public directory, for now)
-content/
-public/
+content*/
+public*/
 
 # (ignore HTML templates)
 templates/
