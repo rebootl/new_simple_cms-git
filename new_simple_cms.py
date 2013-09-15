@@ -32,7 +32,7 @@ New features:
  - Metapost processing and plugin
 
 Next:
- - Production of high-quality PDF files for every page using Pandoc ! (incl. sel. plugins)
+ - Production of high-quality PDF files for every page using Pandoc ! (incl. plugins, excl. listing pages, atm)
 
 Inspired by Jekyll and Xac.
 '''
@@ -130,15 +130,6 @@ def make_regular_pages(pages_struct, subdir):
 		main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals=preprocess_page_group(subdir, page_group)
 		#page_subcontent=preprocess_page_group(subdir, page_group)
 		
-		# PDF production
-		if config.PRODUCE_PDF:
-			print("Produce a PDF.")
-			# plugins must provide blocks for pdf's
-			# (setting to [] for development,
-			#  I want to write generate_pdf first)
-			#plugin_blocks_pdf = []
-			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
-		
 		# scan doctype
 		body_doctype=scan_doctype(main_page_body_subst)
 		
@@ -169,6 +160,15 @@ def make_regular_pages(pages_struct, subdir):
 		# write out
 		print('Writing:', out_filepath)
 		write_out(final_html, out_filepath)
+		
+		# PDF production
+		if config.PRODUCE_PDF:
+			print("Produce a PDF.")
+			# plugins must provide blocks for pdf's
+			# (setting to [] for development,
+			#  I want to write generate_pdf first)
+			#plugin_blocks_pdf = []
+			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
 	
 
 # Listing page:
