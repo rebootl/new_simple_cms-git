@@ -137,30 +137,35 @@ Target file content:
 def copy_remaining_content(subdir):
 	'''Copy the remaining folder content.'''
 	dir=os.path.join(config.CONTENT_DIR, subdir)
-
+	
 	# get the dir content
 	filelist=os.listdir(dir)
-
+	
 	# filter out dirs
 	remove_list=[]
 	for file in filelist:
 		if os.path.isdir(os.path.join(config.CONTENT_DIR, subdir, file)):
 			remove_list.append(file)
-
+	
 	# filter out markdown files
 	for file in filelist:
 		if file.endswith(config.MD_EXT):
 			remove_list.append(file)
-
+	
+	# the markdown backup files created by the cgi frontend
+	for file in filelist:
+		if file.endswith(config.MD_EXT+'~'):
+			remove_list.append(file)
+	
 	# more filters might be specified here
 	# ...
 
 	for item in remove_list:
 		filelist.remove(item)
-
+	
 	# (debug-print)
 	#print(filelist)
-
+	
 	# call copy function
 	for file in filelist:
 		copy_file(subdir, file)
