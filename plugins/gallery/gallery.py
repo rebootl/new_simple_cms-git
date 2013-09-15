@@ -18,7 +18,7 @@ Gallery functionality on the website is controlled by Javascript and CSS.
 
 Using imagemagick's convert.'''
 
-## Imports:
+# Imports
 #
 # python
 import os
@@ -30,13 +30,22 @@ import config
 # common functions
 from modules.common import pandoc_pipe
 
-## Plugin config variables:
-MAIN_IMAGE_PREFIX="small-"
+
+# Plugin settings
+# image definitions for website
+MAIN_IMAGE_PREFIX="med-"
 MAIN_IMAGE_WIDTH="450"
 THUMB_IMAGE_PREFIX="thumb-"
 THUMB_IMAGE_WIDTH="100"
+# image definitions for PDF output
+PDF_IMAGE_PREFIX="small-"
+PDF_IMAGE_WIDTH="200"
+
 
 GALLERY_TEMPLATE="plugins/gallery/gallery.html"
+
+
+# Functions
 
 def convert_image(infile, width, outfile):
 	## Convert an image using imagemagick's convert.	
@@ -97,6 +106,8 @@ def gallery(subdir, plugin_in):
 		
 		if not os.path.isfile(main_image_out_path):
 			convert_image(image_in_path, MAIN_IMAGE_WIDTH, main_image_out_path)
+		
+		
 	
 	## Make the HTML:
 	# make the thumb lines
@@ -140,11 +151,18 @@ def gallery(subdir, plugin_in):
 		# (adding an MD image reference for every image)
 		for image in image_list:
 			
+			# (make images)
+			image_in_path = os.path.join(gallery_dir, image)
+			pdf_image_name = PDF_IMAGE_PREFIX+image
+			pdf_image_out_path = os.path.join(images_out_dir, pdf_image_name)
+			if not os.path.isfile(pdf_image_out_path):
+				convert_image(image_in_path, PDF_IMAGE_WIDTH, pdf_image_out_path)
+			
 			# (we need the absolute path for the PDF production)
 			cwd = os.getcwd()
 			images_out_dir_abs = os.path.join(cwd, images_out_dir)
 			
-			img_name = MAIN_IMAGE_PREFIX+image
+			img_name = PDF_IMAGE_PREFIX+image
 			
 			img_src = os.path.join(images_out_dir_abs, img_name)
 			img_alt = ''
