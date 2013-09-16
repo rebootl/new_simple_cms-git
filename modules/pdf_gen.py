@@ -31,8 +31,8 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	'''Main PDF generator function.'''
 	
 	# working directory
-	# (needs to be the CONTENT_DIR to include images atm.,
-	#  --> could evtl. be improved)
+	# needs to be the CONTENT_DIR to include images atm.,
+	# (--> could evtl. be improved)
 	# 
 	# the directory is cleaned up and the resulting PDF 
 	# is _moved_ to PUBLISH_DIR below,
@@ -87,4 +87,6 @@ def generate_pdf(subdir, filename_md, page_body_subst, plugin_blocks_pdf, title_
 	inpath = os.path.join(wd, filename_pdf)
 	outdir = os.path.join(config.PUBLISH_DIR, subdir)
 	
-	shutil.move(inpath, outdir)
+	# (using copy + remove since shutil.move doesn't overwrite)
+	shutil.copy(inpath, outdir)
+	os.remove(inpath)
