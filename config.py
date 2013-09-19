@@ -25,10 +25,6 @@ CONTENT_DIR='content'
 #  For subcontent use the option below.)
 REGULAR_TB_LINES=['title', 'author', 'date']
 
-# Table of content depth
-# The level of HTML headers to be included.
-TOC_DEPTH='5'
-
 # Extension for Markdown files
 # (Will be used when looking for MD input files.)
 MD_EXT = '.markdown'
@@ -132,8 +128,13 @@ PRODUCE_PDF = False
 
 ### Publish
 #
+# Table of content depth
+# The level of HTML headers to be included.
+TOC_DEPTH='5'
+
 # Use div's to delimit sections in HTML
 # (Pandoc's --section-divs)
 SECTION_DIV = True
+
 # Directory
 PUBLISH_DIR='public'
