@@ -132,5 +132,8 @@ PRODUCE_PDF = False
 
 ### Publish
 #
+# Use div's to delimit sections in HTML
+# (Pandoc's --section-divs)
+SECTION_DIV = True
 # Directory
 PUBLISH_DIR='public'

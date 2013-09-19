@@ -310,6 +310,10 @@ Returns options for final Pandoc run and output path.'''
 	final_opts.append('--toc')
 	final_opts.append('--toc-depth='+config.TOC_DEPTH)
 	
+	# use div's to delimit sections (optional)
+	if config.SECTION_DIV:
+		final_opts.append('--section-divs')
+	
 	# set the final template
 	final_opts.append('--template='+config.MAJOR_TEMPLATE)
 	
