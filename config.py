@@ -59,7 +59,7 @@ HOME_NAME='Home'
 # Should contain all directories including home as defined above.
 # But might also be used to omit some directories.
 # Should be [] if not used.
-CUSTOM_MENU_ORDER=['Home', 'Projects', 'About me', 'Uploads']
+CUSTOM_MENU_ORDER=['Home', 'Projects', 'Misc', 'About me', 'Uploads']
 
 # Section menu
 #
