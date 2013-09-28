@@ -148,12 +148,14 @@ And the plugin blocks and the title block as lists.'''
 	## Preprocess math content
 	# similar to plugins math content is handled here by my own functions
 	# (see the math_handler module)
-	if config.PROCESS_MATH:
-		main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
-		return main_page_body_subst_m, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
-	
-	else:
-		return main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
+	# --> this is done in make_regular_pages now
+	#if config.PROCESS_MATH:
+	#	main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
+	#	return main_page_body_subst_m, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
+	#
+	#else:
+	#	return main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
+	return main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals
 	
 
 ### New function for CGI frontend, construct pages_struct only for a page.

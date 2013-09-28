@@ -82,7 +82,7 @@ import argparse
 import config
 
 # modules
-from modules.processing import process_dir, preprocess_page_group, prepare_final, process_page
+from modules.processing import process_dir, preprocess_page_group, prepare_final, process_page, handle_math
 from modules.common import pandoc_final, pandoc_pipe_from_file, get_dirs, copy_remaining_content, copy_listing_content, extract_title_block, pandoc_pipe, write_out, scan_doctype
 from modules.main_menu import generate_main_menu
 from modules.section_menu import generate_section_menu
@@ -133,6 +133,12 @@ def make_regular_pages(pages_struct, subdir):
 		# scan doctype
 		body_doctype=scan_doctype(main_page_body_subst)
 		
+		# Preprocess math content
+		if config.PROCESS_MATH:
+			main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
+		else:
+			main_page_body_subst_m = main_page_body_subst
+		
 		## 2.2.) Generate the menus:
 		#
 		## 2.2.1) Main menu:
@@ -152,7 +158,7 @@ def make_regular_pages(pages_struct, subdir):
 		#print("main page body subst: ", main_page_body_subst)
 		
 		# final pandoc processing
-		final_html_subst=pandoc_pipe(main_page_body_subst, final_opts)
+		final_html_subst=pandoc_pipe(main_page_body_subst_m, final_opts)
 		
 		# (debug-print)
 		#print("final html subst: ", final_html_subst)
