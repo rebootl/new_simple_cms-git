@@ -148,8 +148,14 @@ def make_regular_pages(pages_struct, subdir):
 		# prepare for final output
 		final_opts, out_filepath=prepare_final(subdir, page_group, main_page_tb_vals, main_menu, section_menu_list, body_doctype)
 		
+		# (debug-print)
+		#print("main page body subst: ", main_page_body_subst)
+		
 		# final pandoc processing
 		final_html_subst=pandoc_pipe(main_page_body_subst, final_opts)
+		
+		# (debug-print)
+		#print("final html subst: ", final_html_subst)
 		
 		# back substitute
 		if plugin_blocks != []:
