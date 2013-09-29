@@ -51,7 +51,7 @@ Returns the page body.'''
 	# if there's process
 	if has_math:
 		# (debug-print)
-		#print("Math found!")
+		print("Math found!")
 		page_body_m = math_handler(subdir, pagename, page_body)
 		return page_body_m
 	

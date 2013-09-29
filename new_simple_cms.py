@@ -109,6 +109,7 @@ def make_regular_pages(pages_struct, subdir):
 	'''Main function to create regular pages.'''
 	for page_group in pages_struct:
 		# (info-prints)
+		print("Page: ", os.path.join(subdir, page_group[0]))
 		#print('Preprocessing:', page_group[0])
 		#for subcontent in page_group[1:]:
 		#	print(' Subcontent:', subcontent)
@@ -160,13 +161,13 @@ def make_regular_pages(pages_struct, subdir):
 		
 		# write out
 		# (info-print)
-		#print('Writing:', out_filepath)
+		print('Writing:', out_filepath)
 		write_out(final_html, out_filepath)
 		
 		# PDF production
 		if config.PRODUCE_PDF:
 			# (info-print)
-			#print("Produce a PDF.")
+			print("Produce a PDF.")
 			# (plugins must provide blocks for pdf's)
 			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
 	
