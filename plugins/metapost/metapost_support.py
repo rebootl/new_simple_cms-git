@@ -1,16 +1,4 @@
-'''Module of new_simple_cms
-
-Support to process Metapost files.
-
-Metapost files or plugin content is processed and figures are created.
-
-References to the figures are set in the markdown file using the metapost plugin.
-
-Only one .mp file is allowed per directory.
-Containing figures as follows:
-beginfig(n);
-...
-endfig;
+'''Supporting functions to process Metapost.
 
 Using metapost and Imagemagick's convert.'''
 # see workflow below
@@ -31,7 +19,7 @@ from modules.common import copy_file_abs
 
 # Settings
 # metapost file extension
-MP_EXT = ".mp"
+#MP_EXT = ".mp"
 
 # resolution (for HTML output)
 # (in dpi)
@@ -77,42 +65,42 @@ end;'''
 #    -density 150 -geometry 450 -background transparent fig-1.svg fig-1.png
 #
 
-def check_mp(subdir):
-	'''Quick check if there's an .mp file.
+#def check_mp(subdir):
+#	'''Quick check if there's an .mp file.
+#
+#Returning the Metapost file if found or False.'''
+#	dir = os.path.join(config.CONTENT_DIR, subdir)
+#	dir_content = os.listdir(dir)
+#	
+#	for file in dir_content:
+#		if file.endswith(MP_EXT):
+#			return file
+#	
+#	return False
 
-Returning the Metapost file if found or False.'''
-	dir = os.path.join(config.CONTENT_DIR, subdir)
-	dir_content = os.listdir(dir)
-	
-	for file in dir_content:
-		if file.endswith(MP_EXT):
-			return file
-	
-	return False
 
-
-def handle_metapost(subdir):
-	'''Processing Metapost content directory wise.'''
-	
-	mp_file = check_mp(subdir)
-	
-	if not mp_file:
-		return
-	
-	# set out dir
-	# (setting this to content, images are needed there for PDF creation,
-	#  together with the other arbitrary files, they will be copied by the 
-	#  cms to the publish dir)
-	# --> setting in process_metapost!
-	#outdir = os.path.join(CONTENT_DIR, subdir)
-	
-	# read the mp file
-	mp_filepath = os.path.join(config.CONTENT_DIR, subdir, mp_file)
-	
-	with open(mp_filepath, 'r') as f:
-		mp = f.read()
-	
-	process_metapost(subdir, mp_file, mp)
+#def handle_metapost(subdir):
+#	'''Processing Metapost content directory wise.'''
+#	
+#	mp_file = check_mp(subdir)
+##	
+#	if not mp_file:
+#		return
+#	
+#	# set out dir
+#	# (setting this to content, images are needed there for PDF creation,
+#	#  together with the other arbitrary files, they will be copied by the 
+#	#  cms to the publish dir)
+#	# --> setting in process_metapost!
+#	#outdir = os.path.join(CONTENT_DIR, subdir)
+#	
+#	# read the mp file
+#	mp_filepath = os.path.join(config.CONTENT_DIR, subdir, mp_file)
+#	
+#	with open(mp_filepath, 'r') as f:
+#		mp = f.read()
+#	
+#	process_metapost(subdir, mp_file, mp)
 	
 
 def def_fig_color(mp):

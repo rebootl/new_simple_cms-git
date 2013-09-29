@@ -88,7 +88,7 @@ from modules.main_menu import generate_main_menu
 from modules.section_menu import generate_section_menu
 from modules.listing import get_listing_page, gen_listing_table_entries, gen_listing_path_items, prepare_final_listing
 from modules.plugin_handler import back_substitute
-from modules.metapost_handler import handle_metapost
+#from modules.metapost_handler import handle_metapost
 from modules.pdf_gen import generate_pdf
 
 ## Main flow control plan
@@ -123,8 +123,9 @@ def make_regular_pages(pages_struct, subdir):
 		print('Page group:', page_group)
 		
 		# Add in Metapost support
-		if config.PROCESS_MP:
-			handle_metapost(subdir)
+		# --> shall be a plugin only
+		#if config.PROCESS_MP:
+		#	handle_metapost(subdir)
 		
 		## 2.1.) Call preprocess_page_group:
 		main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals=preprocess_page_group(subdir, page_group)

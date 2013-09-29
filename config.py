@@ -118,7 +118,8 @@ PROCESS_MATH = True
 # Metapost processing (external)
 # Needed for external figures using the metapost plugin.
 # (Look for a metapost file in each directory and process it if found. Create images.)
-PROCESS_MP = True
+# --> this is a plugin-only now
+#PROCESS_MP = True
 
 # Produce PDF files !
 # Produce a PDF for every page using Pandoc.
