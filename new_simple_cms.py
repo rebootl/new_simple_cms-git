@@ -135,7 +135,7 @@ def make_regular_pages(pages_struct, subdir):
 		
 		# Preprocess math content
 		if config.PROCESS_MATH:
-			main_page_body_subst_m = handle_math(subdir, main_page_body_subst)
+			main_page_body_subst_m = handle_math(subdir, page_group[0], main_page_body_subst)
 		else:
 			main_page_body_subst_m = main_page_body_subst
 		

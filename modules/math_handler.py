@@ -33,7 +33,7 @@ import config
 
 # Settings
 # subdirectory name for images
-IMG_DIR = 'img-m'
+IMG_DIR_PREFIX = 'img-math-'
 
 # latex template for math formulas
 # (I found this latex code on: mactextoolbox.sourceforge.net/articles/baseline.html)
@@ -81,7 +81,7 @@ COL_FG_HEX = '9cdede'
 #COL_FG = 'rgb 0.611765 0.867188 0.867188'
 
 # html tag
-IMG_TAG = '<img class="texmath-img" style="vertical-align:{yoff}px;width:auto;margin:auto;display:inline;" src="{img_href}" alt="{img_alt}" title="{img_title}" />'
+IMG_TAG = '<img class="texmath-img" style="vertical-align:{yoff}px;" src="{img_href}" alt="{img_alt}" title="{img_title}" />'
 
 
 # Functions
@@ -103,10 +103,13 @@ But if there's none we're faster. Could be done otherwise though.)'''
 		return False
 	
 
-def process_formulas(subdir, texmath_formulas):
+def process_formulas(subdir, pagename, texmath_formulas):
 	'''Process texmath formulas and return HTML code that replaces them.'''
 	# set/create the _final_ output directory
-	outdir_sub_full = os.path.join(config.PUBLISH_DIR, subdir, IMG_DIR)
+	# (one image dir per page)
+	pagename_noext = pagename.split('.')[0]
+	img_dir = IMG_DIR_PREFIX + pagename_noext
+	outdir_sub_full = os.path.join(config.PUBLISH_DIR, subdir, img_dir)
 	
 	if not os.path.isdir(outdir_sub_full):
 		os.makedirs(outdir_sub_full)
@@ -165,7 +168,7 @@ def process_formulas(subdir, texmath_formulas):
 		#subprocess.call(args)
 		
 		# create the html tag
-		img_href = os.path.join(IMG_DIR, img_name)
+		img_href = os.path.join(img_dir, img_name)
 		img_html = IMG_TAG.format(img_href=img_href, img_alt=tm_form_s, img_title=tm_form_s, yoff=-yoff_px)
 		
 		html_formulas.append(img_html)
@@ -176,10 +179,10 @@ def process_formulas(subdir, texmath_formulas):
 	return html_formulas
 	
 
-def math_handler(subdir, page_body):
+def math_handler(subdir, pagename, page_body):
 	'''Handling markdown math content.'''
 	# the regex
-	# should math $$some_tex_formula$$
+	# should match $$some_tex_formula$$
 	re_math = re.compile('\${2}.+?\${2}')
 	
 	# find and substitute it
@@ -188,7 +191,7 @@ def math_handler(subdir, page_body):
 	texmath_formulas = re_math.findall(page_body)
 	
 	# process the formulas
-	html_formulas = process_formulas(subdir, texmath_formulas)
+	html_formulas = process_formulas(subdir, pagename, texmath_formulas)
 	
 	# substitute formulas
 	for formula in html_formulas:

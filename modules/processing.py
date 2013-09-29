@@ -40,7 +40,7 @@ Returning the substituted body and the plugin blocks.'''
 	return file_body_subst, plugin_blocks, plugin_blocks_pdf
 	
 
-def handle_math(subdir, page_body):
+def handle_math(subdir, pagename, page_body):
 	'''Handle math content.
 
 Returns the page body.'''
@@ -52,7 +52,7 @@ Returns the page body.'''
 	if has_math:
 		# (debug-print)
 		print("Math found!")
-		page_body_m = math_handler(subdir, page_body)
+		page_body_m = math_handler(subdir, pagename, page_body)
 		return page_body_m
 	
 	else:
