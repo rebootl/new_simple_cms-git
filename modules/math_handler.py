@@ -42,7 +42,11 @@ IMG_DIR = 'img-m'
 # a bit slower, therefor I'm not using it.) - removed
 LATEX_TEMPL = r'''\documentclass[12pt]{{article}}
 \usepackage{{amsmath}}
+\usepackage{{xcolor}}
 \pagestyle{{empty}}
+
+\definecolor{{main_fg}}{{HTML}}{{ {col_fg_hex} }}
+\color{{main_fg}}
 
 \newsavebox{{\mybox}}
 
@@ -73,7 +77,8 @@ RES_DPI = '145'
 # background color
 COL_BG = 'Transparent'
 # foreground color
-COL_FG = 'rgb 0.611765 0.867188 0.867188'
+COL_FG_HEX = '9cdede'
+#COL_FG = 'rgb 0.611765 0.867188 0.867188'
 
 # html tag
 IMG_TAG = '<img class="texmath-img" style="vertical-align:{yoff}px;width:auto;margin:auto;display:inline;" src="{img_href}" alt="{img_alt}" title="{img_title}" />'
@@ -119,7 +124,7 @@ def process_formulas(subdir, texmath_formulas):
 		tm_form_s = tm_formula.strip("$$")
 		
 		# insert the formula in the latex template
-		latex_form = LATEX_TEMPL.format(formula=tm_form_s)
+		latex_form = LATEX_TEMPL.format(formula=tm_form_s, col_fg_hex=COL_FG_HEX)
 		
 		# write out tex input file to a file in the temporary directory
 		mform_name = 'mform_'+str(num)
@@ -153,7 +158,7 @@ def process_formulas(subdir, texmath_formulas):
 		dvifile_path = os.path.join(tmp_wd, mform_name+'.dvi')
 		img_name = mform_name+'.png'
 		img_out_path = os.path.join(outdir_sub_full, mform_name+'.png')
-		args = ['dvipng', '-T', 'tight', '-D', RES_DPI, '--depth', '-bg', COL_BG, '-fg', COL_FG, '-o', img_out_path, dvifile_path]
+		args = ['dvipng', '-T', 'tight', '-D', RES_DPI, '--depth', '-bg', COL_BG, '-o', img_out_path, dvifile_path]
 		proc = subprocess.Popen(args, stdout=subprocess.PIPE)
 		out_std, out_err = proc.communicate()
 		
