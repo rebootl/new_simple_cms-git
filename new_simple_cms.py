@@ -29,7 +29,12 @@ New features:
  - A frontend for local use ! (--> in development)
  - Complete CLI w/ arguments and checks !
  - Math processing using latex and dvipng.
- - Metapost processing and plugin
+
+Plugins:
+ - Insert file
+ - Gallery
+ - Tree
+ - Metapost
 
 Next:
  - Production of high-quality PDF files for every page using Pandoc ! (incl. plugins, excl. listing pages, atm)
@@ -91,47 +96,28 @@ from modules.plugin_handler import back_substitute
 #from modules.metapost_handler import handle_metapost
 from modules.pdf_gen import generate_pdf
 
-## Main flow control plan
+
+# main flow control plan
 #
-# 1.) Get the directories to process starting at CONTENT_DIR.  <-- done, hopefully it's working..
+# /* must be rewritten */
 #
-## For everyone of them:
-#
-# 2.) Call the process_dir function.
-#        2.1.) preprocess_page_group is called from there. (--> is called from main now)
-#
-# 2.2) Generate the menus.                                     <-- done, hopefully it's working...
-#
-# 2.3) Prepare and call the pandoc_final function.		<-- done
-#
-# - Copy the remaining folder content (images, style-sheets etc.) <-- done, make a separate one 
-#								      for directory listing, done
-# - Directory listing.						<-- done
-# - Make an option to only refresh a given subdirectory,
-#    instead of the hole tree. From a given subdirectory on,
-#    downwards, or only the given subdirectory ? Both would be 
-#    nice and easy to do... Implemented the former for now.	<-- partially, OK
-##
 
 
-# Regular page:
+# Functions
+
 def make_regular_pages(pages_struct, subdir):
+	'''Main function to create regular pages.'''
 	for page_group in pages_struct:
-		print('Preprocessing:', page_group[0])
-		for subcontent in page_group[1:]:
-			print(' Subcontent:', subcontent)
-		print('Page group:', page_group)
+		# (info-prints)
+		#print('Preprocessing:', page_group[0])
+		#for subcontent in page_group[1:]:
+		#	print(' Subcontent:', subcontent)
+		#print('Page group:', page_group)
 		
-		# Add in Metapost support
-		# --> shall be a plugin only
-		#if config.PROCESS_MP:
-		#	handle_metapost(subdir)
-		
-		## 2.1.) Call preprocess_page_group:
+		# Preprocess page
 		main_page_body_subst, plugin_blocks, plugin_blocks_pdf, main_page_tb_vals=preprocess_page_group(subdir, page_group)
-		#page_subcontent=preprocess_page_group(subdir, page_group)
 		
-		# scan doctype
+		# (scan doctype)
 		body_doctype=scan_doctype(main_page_body_subst)
 		
 		# Preprocess math content
@@ -140,18 +126,20 @@ def make_regular_pages(pages_struct, subdir):
 		else:
 			main_page_body_subst_m = main_page_body_subst
 		
-		## 2.2.) Generate the menus:
+		# Generate the menus
 		#
-		## 2.2.1) Main menu:
-		print('Generate main menu.')
-		print('Subdir:', subdir, 'Page group [0]:', page_group[0])
+		# main menu
+		# (info-prints)
+		#print('Generate main menu.')
+		#print('Subdir:', subdir, 'Page group [0]:', page_group[0])
 		main_menu=generate_main_menu(subdir, page_group[0])
 		
-		## 2.2.2) Section menu:
-		print('Generate section menu.')
+		# section menu
+		# (info-prints)
+		#print('Generate section menu.')
 		section_menu_list=generate_section_menu(subdir, page_group[0])
 		
-		## 2.3.) Finalize this page:
+		# Finalize this page
 		# prepare for final output
 		final_opts, out_filepath=prepare_final(subdir, page_group, main_page_tb_vals, main_menu, section_menu_list, body_doctype)
 		
@@ -171,24 +159,23 @@ def make_regular_pages(pages_struct, subdir):
 			final_html=final_html_subst
 		
 		# write out
-		print('Writing:', out_filepath)
+		# (info-print)
+		#print('Writing:', out_filepath)
 		write_out(final_html, out_filepath)
 		
 		# PDF production
 		if config.PRODUCE_PDF:
-			print("Produce a PDF.")
-			# plugins must provide blocks for pdf's
-			# (setting to [] for development,
-			#  I want to write generate_pdf first)
-			#plugin_blocks_pdf = []
+			# (info-print)
+			#print("Produce a PDF.")
+			# (plugins must provide blocks for pdf's)
 			generate_pdf(subdir, page_group[0], main_page_body_subst, plugin_blocks_pdf, main_page_tb_vals)
 	
 
-# Listing page:
 def make_listing_page(subdir):
+	'''Main function to create a directory listing page.'''
 	#
 	# look if there is a -listing- page
-	#  preprocess that page
+	# preprocess that page
 	listing_page_md=get_listing_page(subdir)
 	
 	if listing_page_md != '':
@@ -196,18 +183,17 @@ def make_listing_page(subdir):
 		opts=[]
 		
 		# adding title block extraction here
-		#  (Using them only for the final output below, atm.)
+		# (using them only for the final output below, atm)
 		listing_page_body, title_block_vals=extract_title_block(infile, config.REGULAR_TB_LINES)
 		
 		listing_body_doctype=scan_doctype(listing_page_body)
-		
-		#listing_page_body=pandoc_pipe_from_file(infile, opts)
 	
 	else:
 		title_block_vals=[]
 		listing_page_body=''
 		listing_body_doctype='strict'
 	
+	# (debug-print)
 	#print('Listing Page Body:', listing_page_body)
 	
 	# make the content listing
@@ -216,10 +202,10 @@ def make_listing_page(subdir):
 	# (debug-info)
 	#print('Listing_table:', listing_table)
 	
-	## get/set the parent dir (for the path line)
-	#   this should go in a separate funtion, but it doesn't work
+	# get/set the parent dir (for the path line)
+	# this should go in a separate funtion, but it doesn't work
 	#getset_parent_dir(subdir)
-	# --> now using import config, this could be improved ...
+	# --> now using import config, this could probably be improved ...
 	if config.LISTING_PARENT_DIR == '' :
 		config.LISTING_PARENT_DIR=subdir
 	elif config.LISTING_PARENT_DIR in subdir:
@@ -245,24 +231,27 @@ def make_listing_page(subdir):
 	# write out
 	write_out(final_html, out_filepath)
 	
-	# copy the full folder content, exept listing.markdown...
-	#  (--> The main function is the right place to do this,
-	#       it's rather a subdir than a page related issue.)
-	
 
-## Refreshing options
-#  - page: [[ main-page, subcont-1, subcont-2, .. ]]
-#  - subdir: [[ main-page-1, subcont-1, .. ], [ main-page-2, subcont-1, .. ], .. ]
-#  - subdirs (recursive): for subdir in subdirs " "
-#  - all: " "
+# Refreshing options
+# - page: [[ main-page, subcont-1, subcont-2, .. ]]
+# - subdir: [[ main-page-1, subcont-1, .. ], [ main-page-2, subcont-1, .. ], .. ]
+# - subdirs (recursive): for subdir in subdirs " "
+# - all: " "
 #
-## Make clean functions for these cases:
-#  (Callable from CLI (main, below) and also from CGI!)
+# Make clean functions for these cases:
+# (Callable from CLI (main, below) and also from CGI!)
 #
 def refresh_page(page, subdir):
+	'''Control function for one page.
+
+- Initiate refresh/creation.
+- Copy the remaining folder content.'''
 	# --> to get active class subdir needs to be set to '.'
 	if subdir == '':
 		subdir = '.'
+	
+	# (info-print)
+	print("Processing: ", subdir, page)
 	
 	pages_struct=process_page(page, subdir)
 	
@@ -273,7 +262,14 @@ def refresh_page(page, subdir):
 	
 
 def refresh_subdir(subdir):
+	'''Control function for one subdirectory.
+
+- Initiate refresh/creation.
+- Copy the remaining folder content.'''
 	pages_struct=process_dir(subdir)
+	
+	# (info-print)
+	print("Processing: ", subdir)
 	
 	if pages_struct != []:
 		make_regular_pages(pages_struct, subdir)
@@ -284,12 +280,16 @@ def refresh_subdir(subdir):
 	
 
 def refresh_subdirs_recursive(refresh_dir):
+	'''Control function acting recursively from given directory on.
+
+- Initiate refresh/creation.
+- Copy the remaining folder content.'''
 	subdirs=get_dirs(refresh_dir)
 	
 	# process dirs
 	for subdir in subdirs:
-		print('Processing: ', os.path.join(config.CONTENT_DIR, subdir))
-		## 2.) Call process_dir:
+		print('Processing: ', subdir)
+		# (call process_dir)
 		pages_struct=process_dir(subdir)
 		
 		# if no index page is found a directory listing will be created
@@ -299,12 +299,13 @@ def refresh_subdirs_recursive(refresh_dir):
 		else:
 			make_listing_page(subdir)
 			copy_listing_content(subdir)
-		
-		## 3.) Copy the remaining folder content (moved above)
 	
 
-## Main:
+# Main
 def main():
+	'''The main function called at commandline invocation.
+
+- Argument parsing and initialising subsequent actions.'''
 	# Make a nice argument/options handling !
 	# using argparse
 	parser=argparse.ArgumentParser(description='Generate website from files/directory structure.', epilog='Using Pandoc and Markdown.')

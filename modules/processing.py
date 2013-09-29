@@ -51,13 +51,13 @@ Returns the page body.'''
 	# if there's process
 	if has_math:
 		# (debug-print)
-		print("Math found!")
+		#print("Math found!")
 		page_body_m = math_handler(subdir, pagename, page_body)
 		return page_body_m
 	
 	else:
 		# (debug-print)
-		print("No math found.")
+		#print("No math found.")
 		return page_body
 	
 
@@ -221,16 +221,18 @@ Returns the pages_struct. A nested list.'''
 	## Check if there's an index file:
 	if glob.glob(os.path.join(dir, '*listing*')):
 		# checking for listing page first
-		print("Listing file found, returning...")
+		# (info-print)
+		#print("Listing file found, returning...")
 		return []
 	elif glob.glob(os.path.join(dir,'*index*')):
 		pass
 	else:
 		# if no index file is found the directory
 		#  should be published as listing
-                #  for now just exit
-                print("No index file found, returning...")
-                return []
+		#  for now just exit
+		# (info-print)
+		#print("No index file found, returning...")
+		return []
 	
 	## Get all .markdown files:
 	markdown_filelist=[]
@@ -269,8 +271,8 @@ Returns the pages_struct. A nested list.'''
 			if page_name in file:
 				pages_struct[idx].append(file)
 	
-	# debug-info
-	print('Pages struct:', pages_struct)
+	# (debug-print)
+	#print('Pages struct:', pages_struct)
 	#for group in pages_struct:
 	#	for file in group:
 	#		print(file.split('.')[0])

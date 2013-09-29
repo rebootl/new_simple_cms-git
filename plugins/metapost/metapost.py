@@ -15,17 +15,19 @@ beginfig(n);
 % code
 endfig;
 
-or (as reference to separate metapost file)
+or (reference to separate metapost file)
 
 [[ FIG_EXT ] [ filename, n, description ]]
 
-Where n is the figure number in the external metapost file: filename.
+Where n is the figure number in the external metapost file filename.
 The file is expected in the current subdirectory and can contain multiple 
-figures in above syntax.
+figures in the above syntax.
 Further this method offers an optional description.
+External figures are inserted as figures, using Pandoc figure syntax.
 
-The figures are wrapped in a default template. Special configuration settings 
-e.g. the default template, resolution, size are defined in support_handler.'''
+The figures are wrapped in a default metapost template. Special configuration 
+settings e.g. the default template, resolution, size are defined in support_handler.
+'''
 
 # Imports
 # python
@@ -35,7 +37,7 @@ import os
 import config
 
 # processing function
-from plugins.metapost.metapost_support import process_metapost
+from plugins.metapost.metapost_processing import process_metapost
 
 
 # Settings
@@ -43,7 +45,9 @@ from plugins.metapost.metapost_support import process_metapost
 BASE_FILE_NAME = 'fig-plugin-xxx555'
 
 # img tag
+# (inline)
 IMG_TAG = '<img style="width:auto;" alt="{alt}" src="{src}" />'
+# (external)
 IMG_TAG_FIG = '<div class="figure"><img style="width:auto;" alt="{alt}" src="{src}" /></div>\n'
 
 # description tag (explicit)

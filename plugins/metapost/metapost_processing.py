@@ -1,4 +1,6 @@
-'''Supporting functions to process Metapost.
+'''Processing functions for Metpost.
+
+Used by the metapost plugin.
 
 Using metapost and Imagemagick's convert.'''
 # see workflow below
@@ -17,10 +19,6 @@ import config
 # common
 from modules.common import copy_file_abs
 
-# Settings
-# metapost file extension
-#MP_EXT = ".mp"
-
 # resolution (for HTML output)
 # (in dpi)
 # influences the resulting size of the PNG
@@ -29,10 +27,6 @@ FIG_RES_DPI = "150"
 # image (png) foreground color (for HTML output)
 # (metapost color syntax)
 FG_COL_HTML_IMG = "(0.6,0.8,0.8)"
-
-# width
-# --> not used atm
-#FIG_WIDTH = "450"
 
 # metapost template
 MP_TEMPL = r'''prologues := 3;
@@ -50,12 +44,10 @@ etex
 end;'''
 
 
-# Functions
-#
 # workflow is as follows
 # 
-# 1) find the .mp file
-# 2) read it
+# 1) find the .mp file (done by the plugin now)
+# 2) read it (done by the plugin now)
 # 3) insert it in a latex template
 #    configured to output as svg
 #
@@ -65,43 +57,7 @@ end;'''
 #    -density 150 -geometry 450 -background transparent fig-1.svg fig-1.png
 #
 
-#def check_mp(subdir):
-#	'''Quick check if there's an .mp file.
-#
-#Returning the Metapost file if found or False.'''
-#	dir = os.path.join(config.CONTENT_DIR, subdir)
-#	dir_content = os.listdir(dir)
-#	
-#	for file in dir_content:
-#		if file.endswith(MP_EXT):
-#			return file
-#	
-#	return False
-
-
-#def handle_metapost(subdir):
-#	'''Processing Metapost content directory wise.'''
-#	
-#	mp_file = check_mp(subdir)
-##	
-#	if not mp_file:
-#		return
-#	
-#	# set out dir
-#	# (setting this to content, images are needed there for PDF creation,
-#	#  together with the other arbitrary files, they will be copied by the 
-#	#  cms to the publish dir)
-#	# --> setting in process_metapost!
-#	#outdir = os.path.join(CONTENT_DIR, subdir)
-#	
-#	# read the mp file
-#	mp_filepath = os.path.join(config.CONTENT_DIR, subdir, mp_file)
-#	
-#	with open(mp_filepath, 'r') as f:
-#		mp = f.read()
-#	
-#	process_metapost(subdir, mp_file, mp)
-	
+# Functions	
 
 def def_fig_color(mp):
 	'''Find the beginfig(n); tags and add the color specification after them.'''
@@ -134,7 +90,8 @@ def call_mpost(mp, tmp_wd, filename):
 	os.chdir(tmp_wd)
 	
 	# call metapost
-	args = ['mpost', '-tex=latex', '-debug', filename]
+	# (use -debug if needed)
+	args = ['mpost', '-tex=latex', filename]
 	proc = subprocess.Popen(args, stdout=subprocess.PIPE)
 	out_std, out_err = proc.communicate()
 	
@@ -203,9 +160,7 @@ def process_metapost(subdir, filename, mp):
 		subprocess.call(args)
 		
 	
-	#if PRODUCE_PDF:
-	# (debug)
-	if True:
+	if config.PRODUCE_PDF:
 		# produce eps for PDF output
 		# (the eps has to be produced again because here we want default
 		#  foreground colors)
@@ -232,7 +187,4 @@ def process_metapost(subdir, filename, mp):
 			
 			shutil.copy(inpath, outdir)
 			
-			#cp_command=['cp', '-u', inpath, outdir]
-			#proc=subprocess.Popen(cp_command)
-			
-
+	

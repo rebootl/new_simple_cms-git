@@ -151,7 +151,7 @@ def process_formulas(subdir, pagename, texmath_formulas):
 			depth_texpt_str = df.readline()
 			depth_texpt = float(depth_texpt_str.strip().rstrip('pt'))
 		# (debug-print)
-		print("depth texpt: ", depth_texpt)
+		#print("depth texpt: ", depth_texpt)
 		
 		# convert depth pt to px
 		yoff_px = round( depth_texpt * int(RES_DPI) / 72 )
