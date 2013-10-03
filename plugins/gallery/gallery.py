@@ -44,6 +44,10 @@ PDF_IMAGE_WIDTH="200"
 
 GALLERY_TEMPLATE="plugins/gallery/gallery.html"
 
+# gallery prefix
+# (needed for div id that has to be a letter, no digit, blergh)
+GALLERY_PREFIX="gal-"
+
 
 # Functions
 
@@ -58,7 +62,7 @@ def convert_image(infile, width, outfile):
 
 def gallery(subdir, plugin_in):
 	gallery_dir=plugin_in
-	gallery_name=os.path.basename(gallery_dir)
+	gallery_name = GALLERY_PREFIX+os.path.basename(gallery_dir)
 	
 	# check if the directory exists
 	if os.path.isdir(plugin_in):
