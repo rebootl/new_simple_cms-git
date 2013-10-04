@@ -6,13 +6,22 @@ Insert a clickable directory tree structure.
 Using tree to generate the tree.
 Probably using a little javascript to edit the links to use listing.html.
 
-CDATA syntax:
+Syntax:
 
-<![TREE[directory, tree-options]]>
+[[ TREE ][ directory, tree-options ]]
 
-Where _directory_ can be a relative path, starting in the directory the plugin is used.Or an absolute path.
+Where directory can be a relative path, starting in the current content
+subdirectory, or an absolute path.
 
-And _tree-options_ are additional tree command line options.'''
+And tree-options are additional tree command line options.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 ## Imports:
 #

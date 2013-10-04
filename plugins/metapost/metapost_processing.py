@@ -2,7 +2,16 @@
 
 Used by the metapost plugin.
 
-Using metapost and Imagemagick's convert.'''
+Using metapost and Imagemagick's convert.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
+
 # see workflow below
 #
 # Imports

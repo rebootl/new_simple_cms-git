@@ -3,7 +3,8 @@
 
 Using the python module http.server.
 
-CGI enabled.'''
+CGI enabled.
+'''
 
 # Import 
 # python modules

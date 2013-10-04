@@ -7,7 +7,16 @@ Similar to plugins, markdown* math is handled here.
 Doing this separately cause it offers more possibilities
 than the built-in pandoc math processing!
 
-Using latex and dvipng.'''
+Using latex and dvipng.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
+
 # Enhancements:
 # - Set a maximum line length/width.
 #   --> probably set \linewidth

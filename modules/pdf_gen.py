@@ -9,7 +9,15 @@ To remove them completely they have to be deleted on both locations.
 (This is suboptimal and may lead to confusion but it's needed for the 
 inserted images.) --> improve
 
-Using Pandoc.'''
+Using Pandoc.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 # Imports
 # python

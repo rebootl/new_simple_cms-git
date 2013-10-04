@@ -5,14 +5,22 @@ Insert a file content. Either as text or as specified code block.
 
 This one will simply use pandoc to format the code blocks!
 
-CDATA syntax:
+Syntax:
 
-<![INSERTFILE[type, filename]]>
+[[ INSERTFILE ][ type, filename ]]
 
-Where _type_ can be text, or any code type pandoc understands
+Where type can be text, or any code type pandoc understands
 (see pandoc --version).
-And _filename_ can be an either be a relative path, starting in the 
-directory the plugin is used. Or an absolute path.'''
+And filename can be an either be a relative path, starting in the current
+content subdirectory. Or an absolute path.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 ## Imports:
 #

@@ -1,7 +1,15 @@
 '''Module of new_simple_cms.py.
 
 Recursive creation of a dynamic website menu based on a
-directory structure.'''
+directory structure.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 # Imports
 #

@@ -3,12 +3,13 @@
 
 Insert an image gallery.
 
-MD syntax:
+Syntax:
 
 [[ GALLERY ][ directory ]]
 
-Where _directory_ should be a directory containing the images.
-(If you don't want the directory to appear on the website it should be outside of content. 
+Where directory should be a directory containing the images.
+(If you don't want the directory to appear on the website it should be outside
+of content. 
 If relative it will be assumed to be in the script directory!)
 
 Images will be resized, thumbnailed and copied into the current public subdir.
@@ -16,7 +17,15 @@ Images will be resized, thumbnailed and copied into the current public subdir.
 
 Gallery functionality on the website is controlled by Javascript and CSS.
 
-Using imagemagick's convert.'''
+Using imagemagick's convert.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 # Imports
 #

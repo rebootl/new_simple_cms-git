@@ -28,6 +28,13 @@ External figures are inserted as figures, using Pandoc figure syntax.
 The figures are wrapped in a default metapost template. Special configuration 
 settings e.g. the default template, resolution, size are defined in support_handler.
 '''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 # Imports
 # python

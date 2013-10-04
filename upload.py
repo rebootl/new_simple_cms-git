@@ -1,7 +1,15 @@
 #!/usr/bin/python
 '''Simple FTP upload script for new_simple_cms
 
-- Shall be able to upload single files, directories and recursive directories.'''
+- Shall be able to upload single files, directories and recursive directories.
+'''
+# This file is part of new_simple_cms
+#--------------------------------------------------------------------------------
+#
+# Copyright 2013 Cem Aydin
+#
+#--------------------------------------------------------------------------------
+# See new_simple_cms.py for more information.
 
 # Imports
 # python modules
