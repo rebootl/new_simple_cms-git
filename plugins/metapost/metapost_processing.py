@@ -1,4 +1,4 @@
-'''Processing functions for Metpost.
+'''processing functions for Metpost
 
 Used by the metapost plugin.
 

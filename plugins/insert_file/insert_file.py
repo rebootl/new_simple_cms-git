@@ -1,5 +1,5 @@
 #!/usr/bin/python
-'''Plugin for new_simple_cms.
+'''plugin for new_simple_cms
 
 Insert a file content. Either as text or as specified code block.
 

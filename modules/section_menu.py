@@ -1,4 +1,4 @@
-'''Module of new_simple_cms
+'''module of new_simple_cms
 
 Creation of a simple section menu. A section menu includes all main pages
 within a directory.

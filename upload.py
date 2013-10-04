@@ -1,5 +1,5 @@
 #!/usr/bin/python
-'''Simple FTP upload script for new_simple_cms
+'''simple FTP upload script for new_simple_cms
 
 - Shall be able to upload single files, directories and recursive directories.
 '''

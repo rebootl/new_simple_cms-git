@@ -1,5 +1,5 @@
 #!/usr/bin/python
-'''A little static website generator, created for my personal use
+'''a little static website generator, created for my personal use
 
 Using pandoc. (Slightly extended markdown.)
 

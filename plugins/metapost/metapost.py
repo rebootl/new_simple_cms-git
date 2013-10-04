@@ -1,4 +1,4 @@
-'''Plugin for new_simple_cms
+'''plugin for new_simple_cms
 
 Create and insert metapost figures.
 Offering two methods, inline and external reference.

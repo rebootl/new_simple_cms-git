@@ -1,4 +1,4 @@
-'''Module of new_simple_cms
+'''module of new_simple_cms
 
 Common functions.
 (These get imported by the other modules!)

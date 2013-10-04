@@ -1,4 +1,4 @@
-'''Module of new_simple_cms
+'''module of new_simple_cms
 
 Main processing functions.
 '''

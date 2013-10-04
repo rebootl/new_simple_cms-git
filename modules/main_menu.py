@@ -1,4 +1,4 @@
-'''Module of new_simple_cms.py.
+'''module of new_simple_cms
 
 Recursive creation of a dynamic website menu based on a
 directory structure.

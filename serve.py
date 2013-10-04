@@ -1,5 +1,5 @@
 #!/usr/bin/python
-'''Simple webserver for testing purposes.
+'''simple webserver for new_simple_cms
 
 Using the python module http.server.
 
